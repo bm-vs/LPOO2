@@ -23,7 +23,7 @@ public class main {
 		 */
 
 		while (i < 100) {
-			Backjack B = new Backjack(1,2);
+			Blackjack B = new Blackjack(1,2);
 
 //			for (; i < B.cartas.size(); i++) {
 //				// System.out.println(B.cartas.get(i).getCarta());

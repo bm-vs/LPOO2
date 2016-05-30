@@ -3,7 +3,7 @@ package logic;
 import java.util.Random;
 import java.util.Vector;
 
-public class Backjack {
+public class Blackjack {
 
 	public class Player {
 
@@ -18,7 +18,7 @@ public class Backjack {
 	Vector<Carta> cartas;
 	Vector<Player> players;
 
-	public Backjack(int aposta, int numberPlayer) {
+	public Blackjack(int aposta, int numberPlayer) {
 
 		this.aposta = aposta;
 		int i = 0;
