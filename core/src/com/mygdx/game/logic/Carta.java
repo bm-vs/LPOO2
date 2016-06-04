@@ -29,10 +29,10 @@ public class Carta  implements Cloneable{
     }
 
 
-   /* public String getCarta()
+    public String toda()
     {
         return naipe+ " " + valor + " " + carta;
-    }*/
+    }
 
     public Carta clone()
     {

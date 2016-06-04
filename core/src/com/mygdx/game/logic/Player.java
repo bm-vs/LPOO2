@@ -7,15 +7,9 @@ public class Player {
     public Player(double money ) {
         this.money = money;
     }
-
-
     public void setMoney(double money) {
         this.money = money;
     }
-
-
-
-
 
     public double getMoney()
     {

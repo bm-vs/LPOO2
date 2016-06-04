@@ -104,6 +104,7 @@ public class Menu extends StateBase {
             public void clicked(InputEvent event, float x, float y) {
                 System.out.println("Back");
                 sm.add(new StateBJack(sm));
+                //sm.add(new EndGame(sm));
 
             }
         });

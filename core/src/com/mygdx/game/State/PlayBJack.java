@@ -30,7 +30,7 @@ public class PlayBJack extends StateBase {
     Player P;
     Blackjack blackjack;
     private Texture background;
-    private TextButton start, giveCard, stand; //
+    private TextButton start, giveCard, stand;
     private boolean START;
     private Texture texturaCartas;
     Label money;
@@ -92,10 +92,12 @@ public class PlayBJack extends StateBase {
 
         giveCard = new TextButton("Give", skin);
         giveCard.getLabel().setFontScale(2, 1.5f);
+        giveCard.setTouchable(Touchable.disabled);
+
 
         stand = new TextButton("Stand", skin);
-
         stand.getLabel().setFontScale(2, 1.5f);
+        stand.setTouchable(Touchable.disabled);
 
 
         stand.addListener(new ClickListener() {
@@ -103,10 +105,7 @@ public class PlayBJack extends StateBase {
                               public void clicked(InputEvent event, float x, float y) {
 
                                   blackjack.stand();
-                                  if (blackjack.getPlayers().get(DEALER).getValuePlayer() > 21) {
-
-                                      blackjack.win();
-                                  }
+                                  blackjack.win();
 
                                   start.setTouchable(Touchable.enabled);
                                   stand.setTouchable(Touchable.disabled);
@@ -123,19 +122,23 @@ public class PlayBJack extends StateBase {
 
                                   stand.setTouchable(Touchable.enabled);
                                   giveCard.setTouchable(Touchable.enabled);
-                                  //  LOSE = false;
 
-                                  if (P.getMoney() < 10) ;
-                                      //============================estdo fim
+
+                                  if (P.getMoney() < 10)
+                                  {
+                                      giveCard.setLayoutEnabled(false);
+                                      sm.remove();
+                                      sm.add(new EndGame(sm));
+                                  }
                                   else {
                                       P.setMoney(P.getMoney() - 10);
 
                                       START = true;
                                       blackjack = new Blackjack(10, P);
 
-                                      blackjack.giveCard(DEALER);
-                                      blackjack.giveCard(PLAYER);
-                                      blackjack.giveCard(PLAYER);
+                                     System.out.print(blackjack.giveCard(DEALER).toda());
+                                      System.out.print(blackjack.giveCard(PLAYER).toda());
+                                      System.out.print(blackjack.giveCard(PLAYER).toda());
 
 
                                   }
@@ -154,6 +157,8 @@ public class PlayBJack extends StateBase {
                                          start.setTouchable(Touchable.enabled);
                                          stand.setTouchable(Touchable.disabled);
                                          giveCard.setTouchable(Touchable.disabled);
+                                         blackjack.win();
+
                                      }
 
                                  }
@@ -191,7 +196,8 @@ public class PlayBJack extends StateBase {
 
             if (blackjack.LOSE)
                 lose();
-            if (blackjack.WIN)
+            else
+                if (blackjack.WIN)
                 win();
         }
     }
@@ -202,11 +208,12 @@ public class PlayBJack extends StateBase {
         int dx = 0;
 
         batch.begin();
-        if (jogador == 0)//dealer
+        if (jogador == DEALER)
         {
             for (Carta card : cartas) {
                 int j = "PECO".indexOf(card.getNaipe());
                 int i = card.getcarta();
+                i--;
                 dx += 20;
 
                 TextureRegion region = new TextureRegion(texturaCartas, i * 43, j * 57 + 1, 40, 55);
@@ -215,11 +222,12 @@ public class PlayBJack extends StateBase {
             }
         }
 
-        if (jogador == 1)//player
+        if (jogador == PLAYER)
         {
             for (Carta card : cartas) {
                 int j = "PECO".indexOf(card.getNaipe());
                 int i = card.getcarta();
+                i--;
                 dx += 20;
 
                 TextureRegion region = new TextureRegion(texturaCartas, i * 43, j * 57 + 1, 40, 55);

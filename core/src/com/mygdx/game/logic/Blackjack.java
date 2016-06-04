@@ -6,7 +6,8 @@ import java.util.Random;
 import java.util.Vector;
 
 
-public class Blackjack {
+public class Blackjack
+{
 
     public class jogadasPlayer {
 
@@ -27,66 +28,48 @@ public class Blackjack {
     }
 
     private int aposta;
-    private Vector<Carta> cartas;
+    public Vector<Carta> cartas;
     private Vector<jogadasPlayer> players;
     private Player P;
     public  Boolean WIN = false;
     public  Boolean LOSE = false;
     public Boolean DRAW = false;
+    private static final int DEALER = 0;
+    private static final int PLAYER = 1;
 
 
     public Blackjack(int aposta, Player P) {
         this.P = P;
-
         this.aposta = aposta;
-        int i = 0;
+
         cartas = new Vector<Carta>(52);
-        int j = 1;
-        while (i < 10) {
+        //cartas.add(0, new Carta("C",1,1));
 
-            cartas.add(i, new Carta("C", j, j));
-            j++;
-            i++;
 
-        }
+        createNaipe("C");
+        createNaipe("E");
+        createNaipe("O");
+        createNaipe("P");
 
-        while (i < 13) {
-            cartas.add(i, new Carta("C", 10, i));
-            i++;
-        }
-        j = 1;
-        while (i < 23)
-            cartas.add(i, new Carta("E", ++i - 13, j++));
 
-        j = 10;
-        while (i < 26) {
-            cartas.add(i, new Carta("E", 10, j++));
-            i++;
-        }
-
-        j = 1;
-        while (i < 36)
-            cartas.add(i, new Carta("O", ++i - 26, j++));
-
-        j = 10;
-        while (i < 39) {
-            cartas.add(i, new Carta("O", 10, j++));
-            i++;
-        }
-        j = 1;
-        while (i < 49)
-            cartas.add(i, new Carta("P", ++i - 39, j++));
-
-        j = 10;
-        while (i < 52) {
-            cartas.add(i, new Carta("P", 10, j++));
-            i++;
-        }
 
         players = new Vector<jogadasPlayer>(2);
-        players.add(0, new jogadasPlayer());
-        players.add(1, new jogadasPlayer());
+        players.add(new jogadasPlayer());
+        players.add(new jogadasPlayer());
 
+    }
+    public void createNaipe(String naipe)
+    {
+        int i=0;
+        while (i < 10) {
+            i++;
+            cartas.add(new Carta(naipe,i ,i ));
+             }
+
+        while (i < 13) {
+            i++;
+            cartas.add(new Carta(naipe, 10, i));
+        }
     }
 
     public Carta giveCard(int Id) // Id=0 isDealer
@@ -115,9 +98,9 @@ public class Blackjack {
     }
 
     public void win() {
-        int valueDealer = players.get(0).valuePlayer;
+        int valueDealer = players.get(DEALER).valuePlayer;
 
-        int value = players.get(1).valuePlayer;
+        int value = players.get(PLAYER).valuePlayer;
         if (valueDealer > 21) {
             WIN = true;
             P.setMoney(P.getMoney() + 2 * aposta);
@@ -139,15 +122,12 @@ public class Blackjack {
 
     }
 
-    public Vector<Carta> stand() {
+    public void stand() {
 
-        Vector<Carta> allCard = new Vector<Carta>();
         Carta card;
-        while (players.get(0).getValuePlayer() < 17) {
-            card = giveCard(0);
-            allCard.add(card);
+        while (players.get(DEALER).getValuePlayer() < 17) {
+            card = giveCard(DEALER);
         }
-        return allCard;
 
     }
 
