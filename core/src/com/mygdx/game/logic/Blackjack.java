@@ -1,10 +1,10 @@
 package com.mygdx.game.logic;
 
 import com.mygdx.game.logic.Carta;
-import com.mygdx.game.logic.Player;
 
 import java.util.Random;
 import java.util.Vector;
+
 
 public class Blackjack {
 
@@ -16,28 +16,35 @@ public class Blackjack {
         int result;
         Vector<Carta> cartasJoga = new Vector<Carta>();
 
-        public   Vector<Carta> getcartasJogada()
-        {
+        public Vector<Carta> getcartasJogada() {
             return cartasJoga;
         }
+
+        public int getValuePlayer() {
+            return valuePlayer;
+        }
+
     }
 
     private int aposta;
     private Vector<Carta> cartas;
     private Vector<jogadasPlayer> players;
     private Player P;
+    public  Boolean WIN = false;
+    public  Boolean LOSE = false;
+    public Boolean DRAW = false;
 
-    public Blackjack(int aposta,  Player P) {
-        this.P=P;
+
+    public Blackjack(int aposta, Player P) {
+        this.P = P;
 
         this.aposta = aposta;
         int i = 0;
         cartas = new Vector<Carta>(52);
-        int j=1;
-        while (i < 10)
-        {
+        int j = 1;
+        while (i < 10) {
 
-            cartas.add(i, new Carta("C", j,j));
+            cartas.add(i, new Carta("C", j, j));
             j++;
             i++;
 
@@ -47,38 +54,38 @@ public class Blackjack {
             cartas.add(i, new Carta("C", 10, i));
             i++;
         }
-        j=1;
+        j = 1;
         while (i < 23)
             cartas.add(i, new Carta("E", ++i - 13, j++));
 
-        j=10;
+        j = 10;
         while (i < 26) {
-            cartas.add(i, new Carta("E", 10,j++));
+            cartas.add(i, new Carta("E", 10, j++));
             i++;
         }
 
-        j=1;
+        j = 1;
         while (i < 36)
-            cartas.add(i, new Carta("O", ++i - 26,j++));
+            cartas.add(i, new Carta("O", ++i - 26, j++));
 
-        j=10;
+        j = 10;
         while (i < 39) {
-            cartas.add(i, new Carta("O", 10,j++));
+            cartas.add(i, new Carta("O", 10, j++));
             i++;
         }
-        j=1;
+        j = 1;
         while (i < 49)
-            cartas.add(i, new Carta("P", ++i - 39,j++));
+            cartas.add(i, new Carta("P", ++i - 39, j++));
 
-        j=10;
+        j = 10;
         while (i < 52) {
-            cartas.add(i, new Carta("P", 10,j++));
+            cartas.add(i, new Carta("P", 10, j++));
             i++;
         }
 
-        players = new Vector<jogadasPlayer>(3);
-        players.add(0,new jogadasPlayer());
-        players.add(1,new jogadasPlayer());
+        players = new Vector<jogadasPlayer>(2);
+        players.add(0, new jogadasPlayer());
+        players.add(1, new jogadasPlayer());
 
     }
 
@@ -111,14 +118,24 @@ public class Blackjack {
         int valueDealer = players.get(0).valuePlayer;
 
         int value = players.get(1).valuePlayer;
-        if (valueDealer > 21)
+        if (valueDealer > 21) {
+            WIN = true;
             P.setMoney(P.getMoney() + 2 * aposta);
-
-        if (value > valueDealer && value < 22)
-            P.setMoney(P.getMoney() + 2 * aposta);
-
-        if (value == valueDealer)
+        }
+        else if (value > valueDealer && value < 22) {
+            if (value == 21 && players.get(1).timesPlayer == 2 && players.get(1).asPlayer)
+                P.setMoney(P.getMoney() + 2.5 * aposta);
+            else
+                P.setMoney(P.getMoney() + 2 * aposta);
+            WIN = true;
+        }
+        else if (value == valueDealer) {
             P.setMoney(P.getMoney() + aposta);
+            DRAW = true;
+
+        }
+        else
+            LOSE = true;
 
     }
 
@@ -126,21 +143,17 @@ public class Blackjack {
 
         Vector<Carta> allCard = new Vector<Carta>();
         Carta card;
-        while (players.get(0).valuePlayer < 17) {
+        while (players.get(0).getValuePlayer() < 17) {
             card = giveCard(0);
-            players.get(0).cartasJoga.add(card);
             allCard.add(card);
         }
         return allCard;
 
     }
 
-    public Vector<jogadasPlayer> getPlayers()
-    {
+    public Vector<jogadasPlayer> getPlayers() {
         return players;
     }
-
-
 
 
 }

@@ -5,11 +5,11 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
@@ -23,13 +23,16 @@ import java.util.Vector;
 
 
 public class PlayBJack extends StateBase {
+
+    private static final int DEALER = 0;
+    private static final int PLAYER = 1;
+
     Player P;
     Blackjack blackjack;
     private Texture background;
     private TextButton start, giveCard, stand; //
-    private boolean inicio, jogavel;
-    private Texture cartas;
-    Texture texturaCartas;
+    private boolean START;
+    private Texture texturaCartas;
     Label money;
 
     private SpriteBatch batch;
@@ -38,8 +41,8 @@ public class PlayBJack extends StateBase {
     public Skin skin;
     BitmapFont font;
     Texture pixmapTexture;
-    Player player;
     Integer value;
+    Label result;
 
 
     public PlayBJack(ScreenManeger sm) {
@@ -50,20 +53,18 @@ public class PlayBJack extends StateBase {
 
     @Override
     protected void create() {
-
         P = new Player(100);
-        blackjack = new Blackjack(10, P);
+
         background = new Texture("blackJackMesa.png");
-        inicio = new Boolean(true);
-        jogavel = new Boolean(false);
+        texturaCartas = new Texture("cartas.png");
+
+        START = new Boolean(false);
+
 
         batch = new SpriteBatch();
         skin = new Skin();
         stage = new Stage();
         font = new BitmapFont();
-        value= Integer.valueOf((int) P.getMoney());
-        money = new Label (String.format("%03d",value), new Label.LabelStyle(font, Color.BLACK));
-
 
         skin.add("default", font);
 
@@ -97,65 +98,70 @@ public class PlayBJack extends StateBase {
         stand.getLabel().setFontScale(2, 1.5f);
 
 
-
-        Table buttonsTable = new Table();
-
-        buttonsTable.add(money);
-        buttonsTable.add(start).pad(10);
-        buttonsTable.add(giveCard).pad(10);
-        buttonsTable.add(stand).pad(10);
-        buttonsTable.setFillParent(true);
-
-        buttonsTable.right().bottom();
-        buttonsTable.pad(10);
-
-
-        Gdx.input.setInputProcessor(stage);
-        stage.addActor(buttonsTable);
-
         stand.addListener(new ClickListener() {
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-              //  stand.setLayoutEnabled(false);
+                              @Override
+                              public void clicked(InputEvent event, float x, float y) {
 
-            }
-        });
+                                  blackjack.stand();
+                                  if (blackjack.getPlayers().get(DEALER).getValuePlayer() > 21) {
+
+                                      blackjack.win();
+                                  }
+
+                                  start.setTouchable(Touchable.enabled);
+                                  stand.setTouchable(Touchable.disabled);
+                                  giveCard.setTouchable(Touchable.disabled);
+                              }
+                          }
+
+        );
 
         start.addListener(new ClickListener() {
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                start.setLayoutEnabled(false);
-                stand.setLayoutEnabled(true);
-                giveCard.setLayoutEnabled(true);
+                              @Override
+                              public void clicked(InputEvent event, float x, float y) {
+                                  start.setTouchable(Touchable.disabled);
 
-               /* if (P.getMoney() < 10) ;
-                    //============================estdo fim
-                else {*/
-                    P.setMoney(P.getMoney() - 10);
+                                  stand.setTouchable(Touchable.enabled);
+                                  giveCard.setTouchable(Touchable.enabled);
+                                  //  LOSE = false;
+
+                                  if (P.getMoney() < 10) ;
+                                      //============================estdo fim
+                                  else {
+                                      P.setMoney(P.getMoney() - 10);
+
+                                      START = true;
+                                      blackjack = new Blackjack(10, P);
+
+                                      blackjack.giveCard(DEALER);
+                                      blackjack.giveCard(PLAYER);
+                                      blackjack.giveCard(PLAYER);
 
 
-                    blackjack.giveCard(0);
-                    blackjack.giveCard(1);
-                    blackjack.giveCard(1);
+                                  }
+                              }
+                          }
 
-               // }
-
-            }
-        });
+        );
 
         giveCard.addListener(new ClickListener() {
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                //giveCard.setLayoutEnabled(false);
+                                 @Override
+                                 public void clicked(InputEvent event, float x, float y) {
 
-            }
-        });
+                                     blackjack.giveCard(PLAYER);
+                                     if (blackjack.getPlayers().get(PLAYER).getValuePlayer() > 21) {
 
+                                         start.setTouchable(Touchable.enabled);
+                                         stand.setTouchable(Touchable.disabled);
+                                         giveCard.setTouchable(Touchable.disabled);
+                                     }
 
-        texturaCartas = new Texture("cartas.png");
+                                 }
+                             }
 
-
+        );
     }
+
 
     @Override
     protected void handleInput() {
@@ -170,42 +176,112 @@ public class PlayBJack extends StateBase {
     @Override
     public void render() {
         Gdx.gl.glClearColor(1, 1, 1, 1);
+
         batch.begin();
-        batch.draw(background, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-
-        Vector<Carta> cartasDealer= blackjack.getPlayers().get(0).getcartasJogada();
-
-        for (int i = 0; i < cartasDealer.size(); i++)
-        {
-
-               int k= "PECO".indexOf(cartasDealer.get(i).getNaipe());
-            int j=cartasDealer.get(i).getcarta();
-
-                TextureRegion region = new TextureRegion(texturaCartas,j * 43, k * 57+1, 40, 55 );
-                batch.draw(region,j * 12 + k * 100+10, j * 10+10);
-
-
-
-
-        }
-
-
+        batch.draw(background, 0, 0, WIDTH, HEIGHT);
         batch.end();
 
+        drawScene();
         stage.act();
         stage.draw();
+
+        if (START) {
+            drawCards(DEALER);
+            drawCards(PLAYER);
+
+            if (blackjack.LOSE)
+                lose();
+            if (blackjack.WIN)
+                win();
+        }
+    }
+
+    public void drawCards(int jogador) {
+
+        Vector<Carta> cartas = blackjack.getPlayers().get(jogador).getcartasJogada();
+        int dx = 0;
+
+        batch.begin();
+        if (jogador == 0)//dealer
+        {
+            for (Carta card : cartas) {
+                int j = "PECO".indexOf(card.getNaipe());
+                int i = card.getcarta();
+                dx += 20;
+
+                TextureRegion region = new TextureRegion(texturaCartas, i * 43, j * 57 + 1, 40, 55);
+                batch.draw(region, Gdx.graphics.getWidth() / 2 - 50 + dx, Gdx.graphics.getHeight() * 3 / 4);
+
+            }
+        }
+
+        if (jogador == 1)//player
+        {
+            for (Carta card : cartas) {
+                int j = "PECO".indexOf(card.getNaipe());
+                int i = card.getcarta();
+                dx += 20;
+
+                TextureRegion region = new TextureRegion(texturaCartas, i * 43, j * 57 + 1, 40, 55);
+                batch.draw(region, WIDTH / 2 - 50 + dx, HEIGHT / 5);
+            }
+        }
+        batch.end();
+    }
+
+    public void drawScene() {
+        value = Integer.valueOf((int) P.getMoney());
+        money = new Label(String.format("£%3d", value), new Label.LabelStyle(font, Color.WHITE));
+        money.setFontScale(1.5f, 1.5f);
+
+        Table buttonsTable = new Table();
+
+        buttonsTable.add(money).left();
+        buttonsTable.row();
+        buttonsTable.add(start).pad(10);
+        buttonsTable.add(giveCard).pad(10);
+        buttonsTable.add(stand).pad(10);
+        buttonsTable.setFillParent(true);
+
+        buttonsTable.right().bottom();
+        buttonsTable.pad(10);
+
+
+        Gdx.input.setInputProcessor(stage);
+        stage.addActor(buttonsTable);
+    }
+
+    public void lose() {
+        result = new Label("LOSE !!", new Label.LabelStyle(font, Color.RED));
+        result.setFontScale(3, 3);
+
+        Table table = new Table();
+        table.add(result);
+        table.setFillParent(true);
+
+        Stage stage2 = new Stage();
+        stage2.addActor(table);
+        stage2.act();
+        stage2.draw();
 
 
     }
 
-   /* public void drawCard(int PLAYER)
-    {
-        if(PLAYER==0)//dealer
-        {
+    public void win() {
 
-        }
+        result = new Label("WIN !!", new Label.LabelStyle(font, Color.RED));
+        result.setFontScale(3, 3);
 
-    }*/
+        Table table = new Table();
+        table.add(result);
+        table.setFillParent(true);
+
+        Stage stage2 = new Stage();
+        stage2.addActor(table);
+        stage2.act();
+        stage2.draw();
+
+    }
 
     @Override
     public void dispose() {

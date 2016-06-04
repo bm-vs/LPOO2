@@ -72,7 +72,7 @@ public class StateBJack extends StateBase {
         buttonsTable.add(button).width(Gdx.graphics.getWidth() / 3).padBottom(50);
         buttonsTable.setFillParent(true);
 
-        buttonsTable.top().padTop(Gdx.graphics.getWidth() / 4);
+        buttonsTable.top().padTop(Gdx.graphics.getWidth() / 5);
 
 
         Gdx.input.setInputProcessor(stage);

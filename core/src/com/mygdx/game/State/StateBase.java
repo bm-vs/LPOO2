@@ -1,15 +1,14 @@
 package com.mygdx.game.State;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-
-/**
- * Created by Acer-PC on 02/06/2016.
- */
 public abstract class StateBase {
 
     protected ScreenManeger sm;
-    protected Texture background;
+    protected int WIDTH = Gdx.graphics.getWidth();
+    protected int HEIGHT = Gdx.graphics.getHeight();
+
 
     protected StateBase(ScreenManeger sm) {
 

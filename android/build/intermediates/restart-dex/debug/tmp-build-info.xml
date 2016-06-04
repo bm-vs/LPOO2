@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <instant-run
-    api-level="1"
+    abi="x86"
+    api-level="19"
+    density="420dpi"
     format="7"
-    timestamp="126127441598991" >
+    timestamp="143978351243078" >
 
     <task
         name="javac"
