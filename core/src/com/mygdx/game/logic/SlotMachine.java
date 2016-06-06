@@ -1,26 +1,33 @@
-package com.mygdx.game.logic;
+package com.mygdx.game.Logic;
 
 import java.util.Random;
-import java.util.Vector;
 
 public class SlotMachine {
-    private int v_maximo = 10;
-    private int v_medio = 5;
-    private int v_minimo = 2;
-
     private int n1, n2, n3;
 
+    public SlotMachine() {}
 
-    public int play() {
+    public int getN1() {
+        return n1;
+    }
+
+    public int getN2() { return n2; }
+
+    public int getN3() {
+        return n3;
+    }
+
+    public void roll() {
         Random r = new Random();
-
-
         n1 = r.nextInt(10);
         n2 = r.nextInt(10);
         n3 = r.nextInt(10);
+    }
 
-        System.out.println(n1 + "  " + n2 + "  " +n3);
-
+    public int prize() {
+        int v_maximo = 10;
+        int v_medio = 5;
+        int v_minimo = 2;
 
         if (n1 == n2)
         {
@@ -45,17 +52,4 @@ public class SlotMachine {
 
         return 0;
     }
-
-
-    public Vector<Integer> getNumbers()
-    {
-        Vector<Integer> numbers = new Vector<Integer>();
-        numbers.add(n1);
-        numbers.add(n2);
-        numbers.add(n3);
-
-
-        return numbers;
-    }
-
 }
