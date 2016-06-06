@@ -14,8 +14,7 @@ import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.badlogic.gdx.utils.TimeUtils;
 import com.mygdx.game.Logic.SlotMachine;
 
-public class ScreenSlotMachine extends ScreenState {
-
+public class ScreenSlotMachine extends com.mygdx.game.GUI.ScreenState {
 
     public Stage stage;
     private SlotMachine machine;
@@ -45,8 +44,10 @@ public class ScreenSlotMachine extends ScreenState {
         Sprite s = new Sprite(new Texture("slot_machine/bttn_play.png"));
         float scale = (screen_width/4)/s.getWidth();
         s.setSize(screen_width/4, scale*s.getHeight());
+        Sprite sd = new Sprite(new Texture("slot_machine/bttn_d_play.png"));
+        sd.setSize(screen_width/4, scale*sd.getHeight());
 
-        bttn_play = new ImageButton(new SpriteDrawable(s));
+        bttn_play = new ImageButton(new SpriteDrawable(s), new SpriteDrawable(sd));
         bttn_play.setX(screen_width/2-bttn_play.getWidth()/2);
         bttn_play.setY(screen_height/5-bttn_play.getHeight()/2);
 

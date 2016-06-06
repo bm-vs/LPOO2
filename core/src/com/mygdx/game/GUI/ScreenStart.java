@@ -12,7 +12,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 
 
-public class ScreenStart extends ScreenState {
+public class ScreenStart extends com.mygdx.game.GUI.ScreenState {
     public Stage stage;
 
     public ScreenStart(ScreenManager sm) {

@@ -131,11 +131,9 @@ public class PlayBJack extends ScreenState {
                                       START = true;
                                       blackjack = new Blackjack(10,P);
 
-                                      System.out.print(blackjack.giveCard(DEALER).toda());
-                                      System.out.print(blackjack.giveCard(PLAYER).toda());
-                                      System.out.print(blackjack.giveCard(PLAYER).toda());
-
-
+                                      blackjack.giveCard(DEALER);
+                                      blackjack.giveCard(PLAYER);
+                                      blackjack.giveCard(PLAYER);
                                   }
                               }
                           }

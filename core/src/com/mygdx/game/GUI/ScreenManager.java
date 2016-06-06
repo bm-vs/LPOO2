@@ -1,15 +1,12 @@
 package com.mygdx.game.GUI;
 
-
 import java.util.Stack;
 
-public class  ScreenManager {
+public class ScreenManager {
     private Stack<ScreenState> state;
 
     public ScreenManager() {
-
         state = new Stack<ScreenState>();
-
     }
 
     public void add(ScreenState stat) {
@@ -27,5 +24,5 @@ public class  ScreenManager {
     public void render() {
         state.peek().render();
     }
-
 }
+

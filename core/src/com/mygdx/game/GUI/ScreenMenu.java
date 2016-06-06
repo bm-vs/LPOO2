@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.SpriteDrawable;
@@ -35,27 +36,34 @@ public class ScreenMenu extends ScreenState {
         Sprite s = new Sprite(new Texture("menu/bttn_slotmachine.png"));
         float scale = (screen_width/4)/s.getWidth();
         s.setSize(screen_width/4, scale*s.getHeight());
+        Sprite sd = new Sprite(new Texture("menu/bttn_d_slotmachine.png"));
+        sd.setSize(screen_width/4, scale*sd.getHeight());
 
-        bttn_slotmachine = new ImageButton(new SpriteDrawable(s));
+        bttn_slotmachine = new ImageButton(new SpriteDrawable(s), new SpriteDrawable(sd));
         bttn_slotmachine.setX(screen_width/2-bttn_slotmachine.getWidth()/2-pad);
         bttn_slotmachine.setY(screen_height/2-bttn_slotmachine.getHeight()/2+pad);
 
-
         s = new Sprite(new Texture("menu/bttn_blackjack.png"));
         s.setSize(screen_width/4, scale*s.getHeight());
-        bttn_blackjack = new ImageButton(new SpriteDrawable(s));
+        sd = new Sprite(new Texture("menu/bttn_d_blackjack.png"));
+        sd.setSize(screen_width/4, scale*sd.getHeight());
+        bttn_blackjack = new ImageButton(new SpriteDrawable(s), new SpriteDrawable(sd));
         bttn_blackjack.setX(screen_width/2-bttn_blackjack.getWidth()/2+pad);
         bttn_blackjack.setY(screen_height/2-bttn_blackjack.getHeight()/2+pad);
 
         s = new Sprite(new Texture("menu/bttn_roulette.png"));
         s.setSize(screen_width/4, scale*s.getHeight());
-        bttn_roulette = new ImageButton(new SpriteDrawable(s));
+        sd = new Sprite(new Texture("menu/bttn_d_roulette.png"));
+        sd.setSize(screen_width/4, scale*sd.getHeight());
+        bttn_roulette = new ImageButton(new SpriteDrawable(s), new SpriteDrawable(sd));
         bttn_roulette.setX(screen_width/2-bttn_roulette.getWidth()/2+pad);
         bttn_roulette.setY(screen_height/2-bttn_roulette.getHeight()/2-pad);
 
         s = new Sprite(new Texture("menu/bttn_poker.png"));
         s.setSize(screen_width/4, scale*s.getHeight());
-        bttn_poker = new ImageButton(new SpriteDrawable(s));
+        sd = new Sprite(new Texture("menu/bttn_d_poker.png"));
+        sd.setSize(screen_width/4, scale*sd.getHeight());
+        bttn_poker = new ImageButton(new SpriteDrawable(s), new SpriteDrawable(sd));
         bttn_poker.setX(screen_width/2-bttn_poker.getWidth()/2-pad);
         bttn_poker.setY(screen_height/2-bttn_poker.getHeight()/2-pad);
 
@@ -90,7 +98,7 @@ public class ScreenMenu extends ScreenState {
         bttn_poker.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                //sm.add(new StateBJack(sm));
+                // stuff
             }
         });
     }
@@ -114,7 +122,5 @@ public class ScreenMenu extends ScreenState {
     @Override
     public void dispose() {
         stage.dispose();
-
-
     }
 }

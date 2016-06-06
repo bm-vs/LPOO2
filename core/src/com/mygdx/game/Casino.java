@@ -3,8 +3,7 @@ package com.mygdx.game;
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
-import com.mygdx.game.GUI.ScreenManager;
-import com.mygdx.game.GUI.ScreenMenu;
+import com.mygdx.game.GUI.*;
 
 public class Casino extends ApplicationAdapter
 {
@@ -17,17 +16,16 @@ public class Casino extends ApplicationAdapter
 
     @Override
     public void create () {
-
         Gdx.gl.glClearColor(1, 1, 1, 1);
         state = new ScreenManager();
-        state.add(new ScreenMenu(state));
+        state.add(new ScreenStart(state));
     }
 
     @Override
- public void render () {
+    public void render () {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         state.update(Gdx.graphics.getDeltaTime());
         state.render();
 
- }
+    }
  }

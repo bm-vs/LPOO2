@@ -1,23 +1,23 @@
 [
     {
-        "outputFile": "C:\\Users\\Acer-PC\\Desktop\\lazaropc\\LPOO\\Projeto\\CasinoPlay\\android\\build\\intermediates\\res\\merged\\debug\\values\\values.xml",
+        "outputFile": "D:\\Casino\\android\\build\\intermediates\\res\\merged\\debug\\values\\values.xml",
         "map": [
             {
                 "to": {
                     "startLine": 2,
                     "startColumn": 4,
                     "startOffset": 55,
-                    "endColumn": 48,
-                    "endOffset": 99
+                    "endColumn": 43,
+                    "endOffset": 94
                 },
                 "from": {
-                    "file": "C:\\Users\\Acer-PC\\Desktop\\lazaropc\\LPOO\\Projeto\\CasinoPlay\\android\\res\\values\\strings.xml",
+                    "file": "D:\\Casino\\android\\res\\values\\strings.xml",
                     "position": {
                         "startLine": 3,
                         "startColumn": 4,
                         "startOffset": 56,
-                        "endColumn": 48,
-                        "endOffset": 100
+                        "endColumn": 43,
+                        "endOffset": 95
                     }
                 }
             },
@@ -25,13 +25,13 @@
                 "to": {
                     "startLine": 3,
                     "startColumn": 4,
-                    "startOffset": 104,
+                    "startOffset": 99,
                     "endLine": 10,
                     "endColumn": 12,
-                    "endOffset": 562
+                    "endOffset": 557
                 },
                 "from": {
-                    "file": "C:\\Users\\Acer-PC\\Desktop\\lazaropc\\LPOO\\Projeto\\CasinoPlay\\android\\res\\values\\styles.xml",
+                    "file": "D:\\Casino\\android\\res\\values\\styles.xml",
                     "position": {
                         "startLine": 2,
                         "startColumn": 4,

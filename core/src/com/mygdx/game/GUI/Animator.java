@@ -9,9 +9,9 @@ public class Animator extends Widget {
     private int current_pos;
     private boolean changing;
     private boolean spinning;
-    private int angle;
+    private float angle;
     private boolean translation;
-    private int rot_speed;
+    private float rot_speed;
 
     public Animator(Image[] i) {
         current_pos = 0;
@@ -24,6 +24,10 @@ public class Animator extends Widget {
         setHeight(i[0].getHeight());
         setWidth(i[0].getWidth());
     }
+
+    public float getAngle() { return angle; }
+
+    public void setAngle(float a) { angle = a; }
 
     public void setTranslation(boolean b) { translation = b; }
 
@@ -43,13 +47,15 @@ public class Animator extends Widget {
         return spinning;
     }
 
-    public int getAngle() { return angle; }
+    public float getRotSpeed() { return rot_speed; }
 
-    public void rotSpeedDec() { if (rot_speed > 0) { rot_speed -= 0.0025; } }
+    public void rotSpeedDec() { if (rot_speed > 0) { rot_speed -= 0.005; } }
+
+    public void resetRotSpeed() { rot_speed = 3; }
 
     public void angleInc(int direction) {
         int i = direction/Math.abs(direction);
-        angle = (angle + i*rot_speed) % 360;
+        angle = angle + i*rot_speed;
     }
 
     public int getCurrentPos() {

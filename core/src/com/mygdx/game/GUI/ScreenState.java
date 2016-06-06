@@ -1,12 +1,10 @@
 package com.mygdx.game.GUI;
 
-
 import com.badlogic.gdx.Gdx;
 
 public abstract class ScreenState {
     public static  final  int WIDTH = Gdx.graphics.getWidth();
     public static  final  int HEIGHT = Gdx.graphics.getHeight();
-
     protected ScreenManager sm;
 
     protected ScreenState(ScreenManager sm) {
