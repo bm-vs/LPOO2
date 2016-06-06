@@ -36,7 +36,7 @@ public class EndGame extends ScreenState {
     @Override
     public void create() {
         background = new Texture("gameover.png");
-        skin= new Skin();
+        skin = new Skin();
         stage = new Stage();
         batch = new SpriteBatch();
 
@@ -68,7 +68,6 @@ public class EndGame extends ScreenState {
         exit.getLabel().setFontScale(2, 2);
 
 
-
         Table buttonsTable = new Table();
         buttonsTable.add(newGame).width(Gdx.graphics.getWidth() / 2).padBottom(50);
         buttonsTable.row();
@@ -82,16 +81,14 @@ public class EndGame extends ScreenState {
         Gdx.input.setInputProcessor(stage);
         stage.addActor(buttonsTable);
 
-        exit.addListener(new ClickListener()
-        {
+        exit.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 Gdx.app.exit();
             }
         });
 
-        newGame.addListener(new ClickListener()
-        {
+        newGame.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 sm.remove();
@@ -115,7 +112,7 @@ public class EndGame extends ScreenState {
     @Override
     public void render() {
         batch.begin();
-        batch.draw(background,0,0,WIDTH,HEIGHT);
+        batch.draw(background, 0, 0, WIDTH, HEIGHT);
         batch.end();
 
         stage.act();
@@ -126,6 +123,13 @@ public class EndGame extends ScreenState {
 
     @Override
     public void dispose() {
+        stage.dispose();
+        background.dispose();
+        batch.dispose();
+        skin.dispose();
+        font.dispose();
+        pixmapTexture.dispose();
+
 
     }
 }

@@ -1,6 +1,4 @@
-package com.mygdx.game.logic;
-
-import com.mygdx.game.logic.Carta;
+package com.mygdx.game.Logic;
 
 import java.util.Random;
 import java.util.Vector;
@@ -43,8 +41,6 @@ public class Blackjack
         this.aposta = aposta;
 
         cartas = new Vector<Carta>(52);
-        //cartas.add(0, new Carta("C",1,1));
-
 
         createNaipe("C");
         createNaipe("E");

@@ -1,4 +1,4 @@
-package com.mygdx.game.logic;
+package com.mygdx.game.Logic;
 
 
 public class Carta  implements Cloneable{

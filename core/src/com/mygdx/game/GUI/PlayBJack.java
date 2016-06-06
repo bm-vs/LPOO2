@@ -15,34 +15,31 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-import com.mygdx.game.logic.Blackjack;
-import com.mygdx.game.logic.Carta;
-import com.mygdx.game.logic.Player;
+import com.mygdx.game.Logic.Player;
+import com.mygdx.game.Logic.Blackjack;
+import com.mygdx.game.Logic.Carta;
 
 import java.util.Vector;
-
 
 public class PlayBJack extends ScreenState {
 
     private static final int DEALER = 0;
     private static final int PLAYER = 1;
 
-    Player P;
-    Blackjack blackjack;
+    private Player P;
+    private Blackjack blackjack;
     private Texture background;
     private TextButton start, giveCard, stand;
     private boolean START;
     private Texture texturaCartas;
-    Label money;
-
+    private Label money;
     private SpriteBatch batch;
-
-    public Stage stage;
-    public Skin skin;
-    BitmapFont font;
-    Texture pixmapTexture;
-    Integer value;
-    Label result;
+    private Stage stage;
+    private Skin skin;
+    private BitmapFont font;
+    private Texture pixmapTexture;
+    private Integer value;
+    private Label result;
 
 
     public PlayBJack(ScreenManager sm) {
@@ -124,19 +121,17 @@ public class PlayBJack extends ScreenState {
                                   giveCard.setTouchable(Touchable.enabled);
 
 
-                                  if (P.getMoney() < 10)
-                                  {
+                                  if (P.getMoney() < 10) {
                                       giveCard.setLayoutEnabled(false);
                                       sm.remove();
                                       sm.add(new EndGame(sm));
-                                  }
-                                  else {
+                                  } else {
                                       P.setMoney(P.getMoney() - 10);
 
                                       START = true;
-                                      blackjack = new Blackjack(10, P);
+                                      blackjack = new Blackjack(10,P);
 
-                                     System.out.print(blackjack.giveCard(DEALER).toda());
+                                      System.out.print(blackjack.giveCard(DEALER).toda());
                                       System.out.print(blackjack.giveCard(PLAYER).toda());
                                       System.out.print(blackjack.giveCard(PLAYER).toda());
 
@@ -196,8 +191,7 @@ public class PlayBJack extends ScreenState {
 
             if (blackjack.LOSE)
                 lose();
-            else
-                if (blackjack.WIN)
+            else if (blackjack.WIN)
                 win();
         }
     }
@@ -208,8 +202,7 @@ public class PlayBJack extends ScreenState {
         int dx = 0;
 
         batch.begin();
-        if (jogador == DEALER)
-        {
+        if (jogador == DEALER) {
             for (Carta card : cartas) {
                 int j = "PECO".indexOf(card.getNaipe());
                 int i = card.getcarta();
@@ -222,8 +215,7 @@ public class PlayBJack extends ScreenState {
             }
         }
 
-        if (jogador == PLAYER)
-        {
+        if (jogador == PLAYER) {
             for (Carta card : cartas) {
                 int j = "PECO".indexOf(card.getNaipe());
                 int i = card.getcarta();
@@ -231,7 +223,7 @@ public class PlayBJack extends ScreenState {
                 dx += 20;
 
                 TextureRegion region = new TextureRegion(texturaCartas, i * 43, j * 57 + 1, 40, 55);
-                     batch.draw(region, WIDTH / 2 - 50 + dx, HEIGHT / 5);
+                batch.draw(region, WIDTH / 2 - 50 + dx, HEIGHT / 5);
             }
         }
         batch.end();
@@ -272,6 +264,8 @@ public class PlayBJack extends ScreenState {
         stage2.act();
         stage2.draw();
 
+        stage2.dispose();
+
 
     }
 
@@ -289,6 +283,9 @@ public class PlayBJack extends ScreenState {
         stage2.act();
         stage2.draw();
 
+        stage2.dispose();
+
+
     }
 
     @Override
@@ -299,6 +296,10 @@ public class PlayBJack extends ScreenState {
         background.dispose();
         font.dispose();
         pixmapTexture.dispose();
+        background.dispose();
+        texturaCartas.dispose();
+        batch.dispose();
+
 
     }
 }
