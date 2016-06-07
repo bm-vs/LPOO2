@@ -4,19 +4,18 @@ import java.util.Random;
 import java.util.Vector;
 
 
-public class Blackjack
-{
+public class Blackjack {
 
-    public class jogadasPlayer {
+    public class gamesPlayer {
 
         int valuePlayer = 0;
         int timesPlayer = 0;
         boolean asPlayer = false;
         int result;
-        Vector<Carta> cartasJoga = new Vector<Carta>();
+        Vector<Card> cardsPlayer = new Vector<Card>();
 
-        public Vector<Carta> getcartasJogada() {
-            return cartasJoga;
+        public Vector<Card> getCardsPlayer() {
+            return cardsPlayer;
         }
 
         public int getValuePlayer() {
@@ -25,109 +24,166 @@ public class Blackjack
 
     }
 
-    private int aposta;
-    public Vector<Carta> cartas;
-    private Vector<jogadasPlayer> players;
+    /**
+     * Private attribute which stores the bet of the player
+     */
+    private int bet;
+
+    /**
+     * Private attibute which stores the cards of the game
+     */
+    public Vector<Card> cards;
+
+    /**
+     * Private attibute which stores the information each player
+     */
+    private Vector<gamesPlayer> players;
+
+    /**
+     * Private attibute the player of the game
+     */
     private Player P;
-    public  Boolean WIN = false;
-    public  Boolean LOSE = false;
+
+    /**
+     * Public attibute which stores the result of the game
+     */
+    public Boolean WIN = false;
+
+    /**
+     * Public attibute which stores the result of the game
+     */
+    public Boolean LOSE = false;
+
+    /**
+     * Public attibute which stores the result of the game
+     */
     public Boolean DRAW = false;
-    private static final int DEALER = 0;
-    private static final int PLAYER = 1;
+
+    /**
+     * Private attribute which stores the index of the dealer in the vector players
+     */
+    private int DEALER = 0;
+
+    /**
+     * Private attribute which stores the index of the player in the vector players
+     */
+    private int PLAYER = 1;
 
 
-    public Blackjack(int aposta, Player P) {
+    /**
+     * Constructor of the class that initialize the private attribute.
+     *
+     * @param bet
+     * @param P
+     */
+    public Blackjack(int bet, Player P) {
         this.P = P;
-        this.aposta = aposta;
+        this.bet = bet;
 
-        cartas = new Vector<Carta>(52);
+        cards = new Vector<Card>(52);
 
-        createNaipe("C");
-        createNaipe("E");
-        createNaipe("O");
-        createNaipe("P");
+        createSuit("C");
+        createSuit("E");
+        createSuit("O");
+        createSuit("P");
 
 
-
-        players = new Vector<jogadasPlayer>(2);
-        players.add(new jogadasPlayer());
-        players.add(new jogadasPlayer());
+        players = new Vector<gamesPlayer>(2);
+        players.add(new gamesPlayer());
+        players.add(new gamesPlayer());
 
     }
-    public void createNaipe(String naipe)
-    {
-        int i=0;
+
+    /**
+     * Creates all cards of the suit and places them in vector card
+     *
+     * @param suit
+     */
+    public void createSuit(String suit) {
+        int i = 0;
         while (i < 10) {
             i++;
-            cartas.add(new Carta(naipe,i ,i ));
-             }
+            cards.add(new Card(suit, i, i));
+        }
 
         while (i < 13) {
             i++;
-            cartas.add(new Carta(naipe, 10, i));
+            cards.add(new Card(suit, 10, i));
         }
     }
 
-    public Carta giveCard(int Id) // Id=0 isDealer
+    /**
+     * give the card a player
+     *
+     * @param Id index of the player
+     */
+    public void giveCard(int Id) // Id = 0 isDealer
     {
-        Carta carta;
+        Card card;
 
         Random r = new Random();
-        int i = r.nextInt(cartas.size());
+        int i = r.nextInt(cards.size());
 
-        carta = cartas.get(i).clone();
-        cartas.remove(i);
+        card = cards.get(i).clone();
+        cards.remove(i);
 
-        players.get(Id).valuePlayer += carta.getValor();
+        players.get(Id).valuePlayer += card.getValue();
         players.get(Id).timesPlayer++;
 
 
-        if (carta.getValor() == 1)
+        if (card.getValue() == 1)
             players.get(Id).asPlayer = true;
 
         if (players.get(Id).asPlayer && players.get(Id).timesPlayer <= 2
                 && players.get(Id).valuePlayer + 10 < 22)
             players.get(Id).valuePlayer += 10;
 
-        players.get(Id).cartasJoga.add(carta);
-        return carta;
+        players.get(Id).cardsPlayer.add(card);
+
     }
 
+    /**
+     * update the variables of the result the game
+     */
     public void win() {
         int valueDealer = players.get(DEALER).valuePlayer;
 
         int value = players.get(PLAYER).valuePlayer;
         if (valueDealer > 21) {
             WIN = true;
-            P.setMoney(P.getMoney() + 2 * aposta);
-        }
-        else if (value > valueDealer && value < 22) {
+            P.setMoney(P.getMoney() + 2 * bet);
+        } else if (value > valueDealer && value < 22) {
             if (value == 21 && players.get(1).timesPlayer == 2 && players.get(1).asPlayer)
-                P.setMoney(P.getMoney() + 2.5 * aposta);
+                P.setMoney(P.getMoney() + 2.5 * bet);
             else
-                P.setMoney(P.getMoney() + 2 * aposta);
+                P.setMoney(P.getMoney() + 2 * bet);
             WIN = true;
-        }
-        else if (value == valueDealer) {
-            P.setMoney(P.getMoney() + aposta);
+        } else if (value == valueDealer) {
+            P.setMoney(P.getMoney() + bet);
             DRAW = true;
 
-        }
-        else
+        } else
             LOSE = true;
 
     }
 
+    /**
+     * ends the dealer´s play
+     */
     public void stand() {
 
-        Carta card;
         while (players.get(DEALER).getValuePlayer() < 17) {
-            card = giveCard(DEALER);
+            giveCard(DEALER);
         }
 
     }
 
-    public Vector<jogadasPlayer> getPlayers() {
+    /**
+     * Returns the players of the game
+     *
+     * @return
+     */
+    public Vector<gamesPlayer> getPlayers() {
         return players;
     }
 

@@ -17,7 +17,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.mygdx.game.Logic.Player;
 import com.mygdx.game.Logic.Blackjack;
-import com.mygdx.game.Logic.Carta;
+import com.mygdx.game.Logic.Card;
 
 import java.util.Vector;
 
@@ -30,7 +30,7 @@ public class PlayBJack extends ScreenState {
     private Texture background;
     private TextButton start, giveCard, stand;
     private boolean START;
-    private Texture texturaCartas;
+    private Texture texturaCards;
     private Label money;
     private SpriteBatch batch;
     private Stage stage;
@@ -51,7 +51,7 @@ public class PlayBJack extends ScreenState {
     public void create() {
 
         background = new Texture("blackJackMesa.png");
-        texturaCartas = new Texture("cartas.png");
+        texturaCards = new Texture("Cards.png");
 
         START = new Boolean(false);
 
@@ -190,31 +190,31 @@ public class PlayBJack extends ScreenState {
 
     public void drawCards(int jogador) {
 
-        Vector<Carta> cartas = blackjack.getPlayers().get(jogador).getcartasJogada();
+        Vector<Card> cards = blackjack.getPlayers().get(jogador).getCardsPlayer();
         int dx = 0;
 
         batch.begin();
         if (jogador == DEALER) {
-            for (Carta card : cartas) {
-                int j = "PECO".indexOf(card.getNaipe());
-                int i = card.getcarta();
+            for (Card card : cards) {
+                int j = "PECO".indexOf(card.getSuit());
+                int i = card.getCard();
                 i--;
                 dx += 20;
 
-                TextureRegion region = new TextureRegion(texturaCartas, i * 43, j * 57 + 1, 40, 55);
+                TextureRegion region = new TextureRegion(texturaCards, i * 43, j * 57 + 1, 40, 55);
                 batch.draw(region, WIDTH / 2 - 50 + dx, HEIGHT * 3 / 4);
 
             }
         }
 
         if (jogador == PLAYER) {
-            for (Carta card : cartas) {
-                int j = "PECO".indexOf(card.getNaipe());
-                int i = card.getcarta();
+            for (Card card : cards) {
+                int j = "PECO".indexOf(card.getSuit());
+                int i = card.getCard();
                 i--;
                 dx += 20;
 
-                TextureRegion region = new TextureRegion(texturaCartas, i * 43, j * 57 + 1, 40, 55);
+                TextureRegion region = new TextureRegion(texturaCards, i * 43, j * 57 + 1, 40, 55);
                 batch.draw(region, WIDTH / 2 - 50 + dx, HEIGHT / 5);
             }
         }
@@ -289,7 +289,7 @@ public class PlayBJack extends ScreenState {
         font.dispose();
         pixmapTexture.dispose();
         background.dispose();
-        texturaCartas.dispose();
+        texturaCards.dispose();
         batch.dispose();
 
 

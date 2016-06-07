@@ -160,7 +160,7 @@ public class ScreenSlotMachine extends com.mygdx.game.GUI.ScreenState {
                     break;
                 case 10:
                     P.setMoney(P.getMoney() + 10);
-                    result.setCurrentPos(3) ///============mostra o que ganhou mas falta mostar o valor do jogador==========
+                  //  result.setCurrentPos(3) ///============mostra o que ganhou mas falta mostar o valor do jogador==========
                     break;
                 default:
                     result.setCurrentPos(0);

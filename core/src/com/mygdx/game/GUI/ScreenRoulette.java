@@ -131,7 +131,7 @@ public class ScreenRoulette extends com.mygdx.game.GUI.ScreenState {
 
 
                 if(P.getMoney() > 0) {
-                    P.setMoney(P.getMoney()- VALOR_A_DEFINIR); ///=========falta tambem mostar o valor do jogador em algum lado
+                   // P.setMoney(P.getMoney()- VALOR_A_DEFINIR); ///=========falta tambem mostar o valor do jogador em algum lado
                     roulette_wheel.setSpinning(true);
                     roulette_ball.setOrigin(roulette_ball.getWidth() / 2, roulette_wheel.getHeight() / 2 - (roulette_ball.getY() - roulette_wheel.getY()));
                     result = roulette.roll();
