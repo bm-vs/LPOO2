@@ -27,6 +27,7 @@ public class ScreenRoulette extends com.mygdx.game.GUI.ScreenState {
     private ImageButton bttn_roll;
     private ImageButton bttn_bet;
     private Image win;
+    private Image lost;
     private Roulette roulette;
     private long t_start;
     private int i = 1;
@@ -43,9 +44,10 @@ public class ScreenRoulette extends com.mygdx.game.GUI.ScreenState {
         create();
     }
 
-    public ScreenRoulette(ScreenManager sm, Player P, Integer[] bet) {
+    public ScreenRoulette(ScreenManager sm, Player P, Integer[] bet, int bet_value) {
         super(sm, P);
         this.bet = bet;
+        this.bet_value = bet_value;
         bet_set = true;
         create();
     }
@@ -85,6 +87,14 @@ public class ScreenRoulette extends com.mygdx.game.GUI.ScreenState {
         win.setSize(WIDTH/4, scale*win.getHeight());
         win.setX(WIDTH/2-win.getWidth()/2);
         win.setY(HEIGHT/5-win.getHeight());
+
+        //================================================================================================================================================================
+        // LOST TEXT
+        lost = new Image(new Texture("roulette/lost.png"));
+        scale = (WIDTH/4)/lost.getWidth();
+        lost.setSize(WIDTH/4, scale*lost.getHeight());
+        lost.setX(WIDTH/2-lost.getWidth()/2);
+        lost.setY(HEIGHT/5-lost.getHeight());
 
 
         //================================================================================================================================================================
@@ -129,22 +139,15 @@ public class ScreenRoulette extends com.mygdx.game.GUI.ScreenState {
         if (bet_set) {
             stage.addActor(bttn_roll);
         }
-        stage.addActor(bttn_bet);
+        else {
+            stage.addActor(bttn_bet);
+        }
 
         bttn_roll.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 if (!bet_set) {
                     return;
-                }
-
-
-                bet_value = 10;
-                if(P.getMoney() - 10 > 0) {
-                    P.setMoney(P.getMoney() - 10);
-                }
-                else {
-                    P.setMoney(150);
                 }
 
                 int n = (int) Math.floor(P.getMoney());
@@ -163,6 +166,10 @@ public class ScreenRoulette extends com.mygdx.game.GUI.ScreenState {
         bttn_bet.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
+                if(P.getMoney() == 0) {
+                    P.setMoney(150);
+                }
+
                 sm.remove();
                 sm.add(new ScreenBet(sm, P));
             }
@@ -199,8 +206,17 @@ public class ScreenRoulette extends com.mygdx.game.GUI.ScreenState {
                 stage.addActor(win);
 
                 P.setMoney(P.getMoney() + return_value);
+                P.addEarningsRoulette(return_value);
                 int n = (int) Math.floor(P.getMoney());
                 player_money.setText(new String(Integer.toString(n)));
+            }
+
+            if (return_value == 0 && lost.getStage() == null) {
+                stage.addActor(lost);
+            }
+
+            if (bttn_bet.getStage() == null) {
+                stage.addActor(bttn_bet);
             }
 
             roulette_ball.setOrigin(roulette_ball.getWidth()/2, roulette_wheel.getHeight()/2-(roulette_ball.getY()-roulette_wheel.getY()));

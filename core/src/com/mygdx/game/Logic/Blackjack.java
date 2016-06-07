@@ -173,16 +173,22 @@ public class Blackjack
         if (valueDealer > 21) {
             WIN = true;
             P.setMoney(P.getMoney() + 2 * aposta);
+            P.addEarningsBlackjack(2 * aposta);
         }
         else if (value > valueDealer && value < 22) {
-            if (value == 21 && players.get(1).timesPlayer == 2 && players.get(1).aceExists())
+            if (value == 21 && players.get(1).timesPlayer == 2 && players.get(1).aceExists()) {
                 P.setMoney(P.getMoney() + 2.5 * aposta);
-            else
+                P.addEarningsBlackjack(2.5 * aposta);
+            }
+            else {
                 P.setMoney(P.getMoney() + 2 * aposta);
+                P.addEarningsBlackjack(2 * aposta);
+            }
             WIN = true;
         }
         else if (value == valueDealer) {
             P.setMoney(P.getMoney() + aposta);
+            P.addEarningsBlackjack(aposta);
             DRAW = true;
 
         }

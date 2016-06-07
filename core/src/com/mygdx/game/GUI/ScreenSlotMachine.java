@@ -127,6 +127,7 @@ public class ScreenSlotMachine extends com.mygdx.game.GUI.ScreenState {
 
                 if(P.getMoney() > 0) {
                     P.setMoney(P.getMoney() - 1);
+                    P.addEarningsSlot(-1);
                 }
                 else {
                     P.setMoney(150);
@@ -144,12 +145,15 @@ public class ScreenSlotMachine extends com.mygdx.game.GUI.ScreenState {
                 switch(machine.prize()) {
                     case 2:
                         P.setMoney(P.getMoney() + 2);
+                        P.addEarningsSlot(2);
                         break;
                     case 5:
                         P.setMoney(P.getMoney() + 5);
+                        P.addEarningsSlot(5);
                         break;
                     case 10:
                         P.setMoney(P.getMoney() + 10);
+                        P.addEarningsSlot(10);
                         break;
                 }
             }

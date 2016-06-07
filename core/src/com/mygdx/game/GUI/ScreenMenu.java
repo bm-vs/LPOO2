@@ -21,7 +21,7 @@ public class ScreenMenu extends ScreenState {
     private ImageButton bttn_slotmachine;
     private ImageButton bttn_blackjack;
     private ImageButton bttn_roulette;
-    private ImageButton bttn_poker;
+    private ImageButton bttn_earnings;
     private Label player_money;
 
     public ScreenMenu(ScreenManager sm, Player P) {
@@ -74,16 +74,16 @@ public class ScreenMenu extends ScreenState {
         s.setSize(WIDTH/4, scale*s.getHeight());
         sd = new Sprite(new Texture("menu/bttn_d_poker.png"));
         sd.setSize(WIDTH/4, scale*sd.getHeight());
-        bttn_poker = new ImageButton(new SpriteDrawable(s), new SpriteDrawable(sd));
-        bttn_poker.setX(WIDTH/2-bttn_poker.getWidth()/2-pad);
-        bttn_poker.setY(HEIGHT/2-bttn_poker.getHeight()/2-pad);
+        bttn_earnings = new ImageButton(new SpriteDrawable(s), new SpriteDrawable(sd));
+        bttn_earnings.setX(WIDTH/2-bttn_earnings.getWidth()/2-pad);
+        bttn_earnings.setY(HEIGHT/2-bttn_earnings.getHeight()/2-pad);
 
         Gdx.input.setInputProcessor(stage);
-        Gdx.input.setCatchBackKey(false);
+        Gdx.input.setCatchBackKey(true);
         stage.addActor(bttn_slotmachine);
         stage.addActor(bttn_blackjack);
         stage.addActor(bttn_roulette);
-        stage.addActor(bttn_poker);
+        stage.addActor(bttn_earnings);
         stage.addActor(player_money);
 
         bttn_slotmachine.addListener(new ClickListener() {
@@ -107,10 +107,10 @@ public class ScreenMenu extends ScreenState {
             }
         });
 
-        bttn_poker.addListener(new ClickListener() {
+        bttn_earnings.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                // stuff
+                sm.add(new ScreenEarnings(sm, P));
             }
         });
     }

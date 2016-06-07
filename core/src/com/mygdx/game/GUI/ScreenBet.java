@@ -16,6 +16,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.SpriteDrawable;
+import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.mygdx.game.Logic.Player;
 
@@ -36,8 +37,12 @@ public class ScreenBet extends com.mygdx.game.GUI.ScreenState {
     private ImageButton red;
     private ImageButton firsthalf;
     private ImageButton secondhalf;
+    private ImageButton add;
+    private ImageButton sub;
     private ButtonGroup buttonGroup;
     private Label player_money;
+    private int bet_amount;
+    private Label amount;
 
     private int delay = 0;
 
@@ -49,6 +54,7 @@ public class ScreenBet extends com.mygdx.game.GUI.ScreenState {
     public void create() {
         stage = new Stage(new ScreenViewport());
         touchdown = false;
+        bet_amount = 0;
 
         int a = (int) Math.floor(P.getMoney());
         player_money = new Label(new String(Integer.toString(a)), new Label.LabelStyle(new BitmapFont(), Color.WHITE));
@@ -150,7 +156,29 @@ public class ScreenBet extends com.mygdx.game.GUI.ScreenState {
         scale = (WIDTH/4)/numbers.getWidth();
         numbers.setSize(WIDTH/4, scale*numbers.getHeight());
         numbers.setX(WIDTH/2-numbers.getWidth()/2);
-        numbers.setY(first12.getY()+first12.getHeight()*2);
+        numbers.setY(first12.getY()+first12.getHeight());
+
+
+        //================================================================================================================================================================
+        // BET AMOUNT
+        s = new Sprite(new Texture("roulette/bets/chip_d.png"));
+        scale = (WIDTH/6)/s.getWidth();
+        s.setSize(WIDTH/6, scale*s.getHeight());
+
+        add = new ImageButton(new SpriteDrawable(s));
+        add.setX(WIDTH/2-add.getWidth()*1.5f);
+        add.setY(numbers.getY()+first12.getHeight()*3);
+
+
+
+        s = new Sprite(new Texture("roulette/bets/chip.png"));
+        scale = (WIDTH/6)/s.getWidth();
+        s.setSize(WIDTH/6, scale*s.getHeight());
+
+        sub = new ImageButton(new SpriteDrawable(s));
+        sub.setX(WIDTH/2+sub.getWidth()/2);
+        sub.setY(numbers.getY()+first12.getHeight()*3);
+
 
 
         //================================================================================================================================================================
@@ -164,6 +192,19 @@ public class ScreenBet extends com.mygdx.game.GUI.ScreenState {
         bttn_bet = new ImageButton(new SpriteDrawable(s), new SpriteDrawable(sd));
         bttn_bet.setX(WIDTH/2-bttn_bet.getWidth()/2);
         bttn_bet.setY(HEIGHT/5+bttn_bet.getHeight()/2);
+
+
+        //================================================================================================================================================================
+        // AMOUNT
+
+        a = (int) Math.floor(bet_amount);
+        amount = new Label(new String(Integer.toString(a)), new Label.LabelStyle(new BitmapFont(), Color.WHITE));
+        scale = (WIDTH/16)/amount.getHeight();
+        amount.setFontScale(scale);
+        amount.setWidth(WIDTH);
+        amount.setAlignment(Align.center);
+        amount.setX(WIDTH/2 - amount.getWidth()/2);
+        amount.setY(third12.getY() - (third12.getY() - bttn_bet.getY())/2);
 
         //================================================================================================================================================================
         // STAGE
@@ -187,6 +228,9 @@ public class ScreenBet extends com.mygdx.game.GUI.ScreenState {
         stage.addActor(firsthalf);
         stage.addActor(secondhalf);
         stage.addActor(player_money);
+        stage.addActor(add);
+        stage.addActor(sub);
+        stage.addActor(amount);
 
         numbers.addListener(new InputListener() {
             @Override
@@ -205,6 +249,10 @@ public class ScreenBet extends com.mygdx.game.GUI.ScreenState {
         bttn_bet.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
+                if (bet_amount == 0) {
+                    return;
+                }
+
                 ArrayList<Integer> bet = new ArrayList<Integer>();
                 Integer[] bet_arr = new Integer[1];
 
@@ -224,8 +272,53 @@ public class ScreenBet extends com.mygdx.game.GUI.ScreenState {
                     bet.toArray(bet_arr);
                 }
 
+                P.setMoney(P.getMoney()-bet_amount);
+                P.addEarningsRoulette(-bet_amount);
+
                 sm.remove();
-                sm.add(new ScreenRoulette(sm, P, bet_arr));
+                sm.add(new ScreenRoulette(sm, P, bet_arr, bet_amount));
+            }
+        });
+
+        add.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                if (bet_amount < 10 && bet_amount+1 <= P.getMoney()) {
+                    bet_amount++;
+                }
+                else if (bet_amount < 100 && bet_amount+10 <= P.getMoney()) {
+                    bet_amount += 10;
+                }
+                else if (bet_amount+100 <= P.getMoney()){
+                    bet_amount += 100;
+                }
+
+                int n = (int) Math.floor(bet_amount);
+                amount.setText(new String(Integer.toString(n)));
+            }
+        });
+
+        sub.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                if (bet_amount == 0) {
+                    return;
+                }
+
+                if (bet_amount <= 10) {
+                    bet_amount--;
+                }
+                else if (bet_amount <= 100) {
+                    bet_amount -= 10;
+                }
+                else {
+                    bet_amount -= 100;
+                }
+
+
+
+                int n = (int) Math.floor(bet_amount);
+                amount.setText(new String(Integer.toString(n)));
             }
         });
 

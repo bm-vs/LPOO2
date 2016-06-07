@@ -14,6 +14,8 @@ import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.SpriteDrawable;
+import com.badlogic.gdx.utils.Align;
+import com.badlogic.gdx.utils.TimeUtils;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.mygdx.game.Logic.Card;
 import com.mygdx.game.Logic.Player;
@@ -40,6 +42,13 @@ public class ScreenBlackjack extends ScreenState {
     private float player_y;
     private float card_height;
     private Label player_money;
+    private ImageButton add;
+    private ImageButton sub;
+    private int bet_amount;
+    private Label amount;
+    private boolean end_game;
+    private long end_time;
+
 
     public ScreenBlackjack(ScreenManager sm, Player P) {
         super(sm, P);
@@ -49,9 +58,10 @@ public class ScreenBlackjack extends ScreenState {
 
     @Override
     public void create() {
-
+        end_game = false;
         texturaCartas = new Texture("blackjack/cartas.png");
         START = false;
+        bet_amount = 0;
 
         batch = new SpriteBatch();
         stage = new Stage(new ScreenViewport());
@@ -92,10 +102,46 @@ public class ScreenBlackjack extends ScreenState {
         bttn_stand.setX(bttn_hit.getX()+bttn_hit.getWidth()+WIDTH/9);
         bttn_stand.setY(WIDTH/10);
 
+        //================================================================================================================================================================
+        // BET AMOUNT
+        s = new Sprite(new Texture("roulette/bets/chip_d.png"));
+        scale = (WIDTH/6)/s.getWidth();
+        s.setSize(WIDTH/6, scale*s.getHeight());
+
+        add = new ImageButton(new SpriteDrawable(s));
+        add.setX(WIDTH/2-add.getWidth()*2);
+        add.setY(bttn_deal.getY()+bttn_deal.getHeight()*2);
+
+        s = new Sprite(new Texture("roulette/bets/chip.png"));
+        scale = (WIDTH/6)/s.getWidth();
+        s.setSize(WIDTH/6, scale*s.getHeight());
+
+        sub = new ImageButton(new SpriteDrawable(s));
+        sub.setX(WIDTH/2+sub.getWidth());
+        sub.setY(bttn_deal.getY()+bttn_deal.getHeight()*2);
+
+        //================================================================================================================================================================
+        // AMOUNT
+
+        int a = (int) Math.floor(bet_amount);
+        amount = new Label(new String(Integer.toString(a)), new Label.LabelStyle(new BitmapFont(), Color.WHITE));
+        scale = (WIDTH/16)/amount.getHeight();
+        amount.setFontScale(scale);
+        amount.setWidth(WIDTH);
+        amount.setAlignment(Align.center);
+        amount.setX(WIDTH/2 - amount.getWidth()/2);
+        amount.setY(sub.getY() + sub.getHeight()/2);
+
+
+
+
         Gdx.input.setInputProcessor(stage);
         Gdx.input.setCatchBackKey(true);
         stage.addActor(bttn_deal);
         stage.addActor(player_money);
+        stage.addActor(amount);
+        stage.addActor(sub);
+        stage.addActor(add);
 
 
         bttn_stand.addListener(new ClickListener() {
@@ -110,29 +156,36 @@ public class ScreenBlackjack extends ScreenState {
 
               bttn_hit.remove();
               bttn_stand.remove();
-              stage.addActor(bttn_deal);
           }
         });
 
         bttn_deal.addListener(new ClickListener() {
           @Override
           public void clicked(InputEvent event, float x, float y) {
+              if (bet_amount == 0 || bet_amount > P.getMoney()) {
+                  return;
+              }
+
               stage.addActor(bttn_hit);
               stage.addActor(bttn_stand);
               bttn_deal.remove();
+              add.remove();
+              sub.remove();
+              amount.remove();
 
 
-              if (P.getMoney() < 10) {
+              if (P.getMoney() == 0) {
                   P.setMoney(150);
               } else {
-                  P.setMoney(P.getMoney() - 10);
+                  P.setMoney(P.getMoney() - bet_amount);
+                  P.addEarningsBlackjack(-bet_amount);
               }
 
               int n = (int) Math.floor(P.getMoney());
               player_money.setText(new String(Integer.toString(n)));
 
               START = true;
-              blackjack = new Blackjack(10,P);
+              blackjack = new Blackjack(bet_amount,P);
 
               blackjack.giveCard(DEALER);
               blackjack.giveCard(PLAYER);
@@ -147,13 +200,54 @@ public class ScreenBlackjack extends ScreenState {
                 if (blackjack.getPlayers().get(PLAYER).getValuePlayer() > 21) {
                     bttn_hit.remove();
                     bttn_stand.remove();
-                    stage.addActor(bttn_deal);
 
                     blackjack.win();
 
                     int n = (int) Math.floor(P.getMoney());
                     player_money.setText(new String(Integer.toString(n)));
                 }
+            }
+        });
+
+        add.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                if (bet_amount < 10 && bet_amount+1 <= P.getMoney()) {
+                    bet_amount++;
+                }
+                else if (bet_amount < 100 && bet_amount+10 <= P.getMoney()) {
+                    bet_amount += 10;
+                }
+                else if (bet_amount+100 <= P.getMoney()){
+                    bet_amount += 100;
+                }
+
+                int n = (int) Math.floor(bet_amount);
+                amount.setText(new String(Integer.toString(n)));
+            }
+        });
+
+        sub.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                if (bet_amount == 0) {
+                    return;
+                }
+
+                if (bet_amount <= 10) {
+                    bet_amount--;
+                }
+                else if (bet_amount <= 100) {
+                    bet_amount -= 10;
+                }
+                else {
+                    bet_amount -= 100;
+                }
+
+
+
+                int n = (int) Math.floor(bet_amount);
+                amount.setText(new String(Integer.toString(n)));
             }
         });
     }
@@ -180,11 +274,41 @@ public class ScreenBlackjack extends ScreenState {
             drawCards(DEALER);
             drawCards(PLAYER);
 
-            if (blackjack.LOSE)
+            if (blackjack.LOSE) {
                 lose();
-            else if (blackjack.WIN)
+                if (!end_game)
+                    end_time = TimeUtils.millis();
+
+                end_game = true;
+            }
+            else if (blackjack.WIN) {
                 win();
+                if (!end_game)
+                    end_time = TimeUtils.millis();
+
+                end_game = true;
+
+            }
+            else if (blackjack.DRAW) {
+                tie();
+                if (!end_game)
+                    end_time = TimeUtils.millis();
+
+                end_game = true;
+            }
         }
+
+        if (end_game && TimeUtils.millis() - end_time > 1500) {
+            START = false;
+            stage.addActor(bttn_deal);
+            stage.addActor(player_money);
+            stage.addActor(amount);
+            stage.addActor(sub);
+            stage.addActor(add);
+
+            end_game = false;
+        }
+
 
         // WHEN BACK BUTTON IS PRESSED RETURN TO MENU
         if (Gdx.input.isKeyPressed(Input.Keys.BACK)) {
@@ -241,6 +365,21 @@ public class ScreenBlackjack extends ScreenState {
 
     public void lose() {
         result = new Image (new Texture("blackjack/lost.png"));
+        float scale = (WIDTH/4)/result.getWidth();
+        result.setSize(WIDTH/4, scale*result.getHeight());
+        result.setX(WIDTH/2-result.getWidth()/2);
+        result.setY(dealer_y-(dealer_y-player_y-card_height)/2-result.getHeight()/2);
+
+        Stage stage2 = new Stage();
+        stage2.addActor(result);
+        stage2.act();
+        stage2.draw();
+
+        stage2.dispose();
+    }
+
+    public void tie() {
+        result = new Image (new Texture("blackjack/tie.png"));
         float scale = (WIDTH/4)/result.getWidth();
         result.setSize(WIDTH/4, scale*result.getHeight());
         result.setX(WIDTH/2-result.getWidth()/2);

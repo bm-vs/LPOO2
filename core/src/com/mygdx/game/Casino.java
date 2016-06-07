@@ -20,7 +20,7 @@ public class Casino extends ApplicationAdapter
         Gdx.gl.glClearColor(1, 1, 1, 1);
         state = new ScreenManager();
         Player P;
-        P = new Player(startMoney);
+        P = new Player();
         state.add(new ScreenStart(state, P));
     }
 
