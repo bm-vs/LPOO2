@@ -1,6 +1,9 @@
 package com.mygdx.game.GUI;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.mygdx.game.Logic.Player;
 
 public abstract class ScreenState {
@@ -17,7 +20,7 @@ public abstract class ScreenState {
 
     public abstract void create();
 
-    //protected abstract void handleInput();
+    protected abstract void handleInput();
 
     public abstract void update(float dt);
 
@@ -27,6 +30,5 @@ public abstract class ScreenState {
 
     public static void setSize(int w, int h) {}
 }
-
 
 

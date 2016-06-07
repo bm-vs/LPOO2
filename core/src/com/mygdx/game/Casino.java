@@ -3,8 +3,7 @@ package com.mygdx.game;
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
-import com.mygdx.game.GUI.ScreenManager;
-import com.mygdx.game.GUI.ScreenStart;
+import com.mygdx.game.GUI.*;
 import com.mygdx.game.Logic.Player;
 
 public class Casino extends ApplicationAdapter
@@ -14,7 +13,6 @@ public class Casino extends ApplicationAdapter
     public static  final  int HEIGHT = 600;
     public static  final  String TITTLE = "Casino";
     private int startMoney = 100;
-
 
 
     @Override

@@ -16,15 +16,10 @@ import com.mygdx.game.Logic.Player;
 public class ScreenStart extends com.mygdx.game.GUI.ScreenState {
     public Stage stage;
 
-
-
     public ScreenStart(ScreenManager sm, Player P) {
         super(sm, P);
         create();
-
     }
-
-
 
     @Override
     public void create() {
@@ -71,7 +66,9 @@ public class ScreenStart extends com.mygdx.game.GUI.ScreenState {
         stage.draw();
     }
 
-
+    @Override
+    protected void handleInput() {
+    }
 
     @Override
     public void update(float dt) {

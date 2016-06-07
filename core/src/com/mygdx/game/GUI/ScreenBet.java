@@ -2,7 +2,9 @@ package com.mygdx.game.GUI;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
@@ -11,6 +13,7 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.ButtonGroup;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.SpriteDrawable;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
@@ -34,7 +37,7 @@ public class ScreenBet extends com.mygdx.game.GUI.ScreenState {
     private ImageButton firsthalf;
     private ImageButton secondhalf;
     private ButtonGroup buttonGroup;
-
+    private Label player_money;
 
     private int delay = 0;
 
@@ -47,13 +50,18 @@ public class ScreenBet extends com.mygdx.game.GUI.ScreenState {
         stage = new Stage(new ScreenViewport());
         touchdown = false;
 
-
+        int a = (int) Math.floor(P.getMoney());
+        player_money = new Label(new String(Integer.toString(a)), new Label.LabelStyle(new BitmapFont(), Color.WHITE));
+        float scale = (WIDTH/16)/player_money.getHeight();
+        player_money.setFontScale(scale);
+        player_money.setX(WIDTH - WIDTH/6);
+        player_money.setY(HEIGHT - scale*player_money.getHeight());
 
         //================================================================================================================================================================
         // OTHER BETS
 
         Sprite s = new Sprite(new Texture("roulette/bets/1st12.png"));
-        float scale = (WIDTH/3)/s.getWidth();
+        scale = (WIDTH/3)/s.getWidth();
         s.setSize(WIDTH/3, scale*s.getHeight());
         Sprite sd = new Sprite(new Texture("roulette/bets/1st12_d.png"));
         sd.setSize(WIDTH/3, scale*sd.getHeight());
@@ -178,6 +186,7 @@ public class ScreenBet extends com.mygdx.game.GUI.ScreenState {
         stage.addActor(red);
         stage.addActor(firsthalf);
         stage.addActor(secondhalf);
+        stage.addActor(player_money);
 
         numbers.addListener(new InputListener() {
             @Override
@@ -216,7 +225,7 @@ public class ScreenBet extends com.mygdx.game.GUI.ScreenState {
                 }
 
                 sm.remove();
-                sm.add(new ScreenRoulette(sm,P, bet_arr));
+                sm.add(new ScreenRoulette(sm, P, bet_arr));
             }
         });
 
@@ -240,7 +249,7 @@ public class ScreenBet extends com.mygdx.game.GUI.ScreenState {
 
         stage.draw();
     }
-
+    
 
     protected void handleInput(){}
 
