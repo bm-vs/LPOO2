@@ -283,8 +283,10 @@ public class ScreenBlackjack extends ScreenState {
             }
             else if (blackjack.WIN) {
                 win();
-                if (!end_game)
+                if (!end_game) {
                     end_time = TimeUtils.millis();
+                    Gdx.input.vibrate(new long[] { 0, 300, 100, 300}, -1);
+                }
 
                 end_game = true;
 

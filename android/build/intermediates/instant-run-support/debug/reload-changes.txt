@@ -1,3 +1,0 @@
-CHANGED,D:\Casino\android\build\intermediates\transforms\instantRun\debug\folders\4000\5\enhanced\com\android\tools\fd\runtime\AppPatchesLoaderImpl.class
-CHANGED,D:\Casino\android\build\intermediates\transforms\instantRun\debug\folders\4000\5\enhanced\com\mygdx\game\Logic\Blackjack$override.class
-CHANGED,D:\Casino\android\build\intermediates\transforms\instantRun\debug\folders\4000\5\enhanced\com\mygdx\game\Logic\Blackjack$jogadasPlayer$override.class

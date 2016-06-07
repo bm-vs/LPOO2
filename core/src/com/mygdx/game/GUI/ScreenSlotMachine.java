@@ -29,6 +29,7 @@ public class ScreenSlotMachine extends com.mygdx.game.GUI.ScreenState {
     private ImageButton bttn_play;
     private Animator result;
     private Label player_money;
+    private boolean done;
 
     public ScreenSlotMachine(ScreenManager sm, Player P) {
         super(sm, P);
@@ -39,6 +40,7 @@ public class ScreenSlotMachine extends com.mygdx.game.GUI.ScreenState {
     public void create() {
         stage = new Stage(new ScreenViewport());
         machine = new SlotMachine();
+        done = false;
 
         float pad = WIDTH/29;
 
@@ -156,6 +158,8 @@ public class ScreenSlotMachine extends com.mygdx.game.GUI.ScreenState {
                         P.addEarningsSlot(10);
                         break;
                 }
+
+                done = true;
             }
         });
     }
@@ -173,7 +177,7 @@ public class ScreenSlotMachine extends com.mygdx.game.GUI.ScreenState {
         if (wheel2.getCurrentPos() == machine.getN2()*2 && TimeUtils.millis()-t_start > dur2) {
             wheel2.setChanging(false);
         }
-        if (wheel3.getCurrentPos() == machine.getN3()*2 && TimeUtils.millis()-t_start > dur3) {
+        if (wheel3.getCurrentPos() == machine.getN3()*2 && TimeUtils.millis()-t_start > dur3 && done) {
             wheel3.setChanging(false);
 
             switch(machine.prize()) {
@@ -191,8 +195,14 @@ public class ScreenSlotMachine extends com.mygdx.game.GUI.ScreenState {
                     break;
             }
 
+            if (machine.prize() == 2 || machine.prize() == 5 || machine.prize() == 10) {
+                Gdx.input.vibrate(new long[] { 0, 300, 100, 300}, -1);
+            }
+
             int n = (int) Math.floor(P.getMoney());
             player_money.setText(new String(Integer.toString(n)));
+
+            done = false;
         }
 
         // CHANGE WHEELS POSITION

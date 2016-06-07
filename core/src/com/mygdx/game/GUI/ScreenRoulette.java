@@ -204,6 +204,7 @@ public class ScreenRoulette extends com.mygdx.game.GUI.ScreenState {
 
             if (return_value > 0 && win.getStage() == null) {
                 stage.addActor(win);
+                Gdx.input.vibrate(new long[] { 0, 300, 100, 300}, -1);
 
                 P.setMoney(P.getMoney() + return_value);
                 P.addEarningsRoulette(return_value);

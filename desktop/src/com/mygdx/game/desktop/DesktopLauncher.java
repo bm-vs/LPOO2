@@ -1,7 +1,7 @@
 package com.mygdx.game.desktop;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
-import com.mygdx.game.Casino;
+import com.mygdx.game.GUI.Casino;
 
 
 public class DesktopLauncher {

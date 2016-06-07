@@ -33,10 +33,12 @@
     <orderEntry type="library" exported="" name="gdx-box2d-platform-1.9.3-natives-desktop" level="project" />
     <orderEntry type="library" exported="" name="gdx-1.9.3" level="project" />
     <orderEntry type="library" exported="" name="gdx-box2d-1.9.3" level="project" />
+    <orderEntry type="library" exported="" name="junit-4.12" level="project" />
     <orderEntry type="library" exported="" name="lwjgl-2.9.2" level="project" />
     <orderEntry type="library" exported="" name="lwjgl_util-2.9.2" level="project" />
     <orderEntry type="library" exported="" name="jlayer-1.0.1-gdx" level="project" />
     <orderEntry type="library" exported="" name="jorbis-0.0.17" level="project" />
+    <orderEntry type="library" exported="" name="hamcrest-core-1.3" level="project" />
     <orderEntry type="library" exported="" name="lwjgl-platform-2.9.2-natives-windows" level="project" />
     <orderEntry type="library" exported="" name="lwjgl-platform-2.9.2-natives-linux" level="project" />
     <orderEntry type="library" exported="" name="lwjgl-platform-2.9.2-natives-osx" level="project" />
@@ -45,5 +47,6 @@
     <orderEntry type="library" exported="" name="jinput-platform-2.0.5-natives-linux" level="project" />
     <orderEntry type="library" exported="" name="jinput-platform-2.0.5-natives-windows" level="project" />
     <orderEntry type="library" exported="" name="jinput-platform-2.0.5-natives-osx" level="project" />
+    <orderEntry type="library" exported="" name="desktop.desktop-1.0" level="project" />
   </component>
 </module>
