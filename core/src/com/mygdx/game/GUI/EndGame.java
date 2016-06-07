@@ -14,6 +14,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.mygdx.game.GUI.ScreenManager;
 import com.mygdx.game.GUI.ScreenState;
+import com.mygdx.game.Logic.Player;
 
 public class EndGame extends ScreenState {
 
@@ -26,10 +27,11 @@ public class EndGame extends ScreenState {
     public Skin skin;
     BitmapFont font;
     Texture pixmapTexture;
+    protected Player P;
 
 
-    public EndGame(ScreenManager sm) {
-        super(sm);
+    public EndGame(ScreenManager sm, Player P) {
+        super(sm, P);
         create();
     }
 
@@ -92,17 +94,14 @@ public class EndGame extends ScreenState {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 sm.remove();
-                sm.add(new ScreenMenu(sm));
+                P = new Player(secondMoney);
+                sm.add(new ScreenMenu(sm, P));
             }
         });
 
 
     }
 
-    @Override
-    protected void handleInput() {
-
-    }
 
     @Override
     public void update(float dt) {

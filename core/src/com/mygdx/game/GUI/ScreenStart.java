@@ -10,20 +10,24 @@ import com.badlogic.gdx.scenes.scene2d.utils.SpriteDrawable;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
+import com.mygdx.game.Logic.Player;
 
 
 public class ScreenStart extends com.mygdx.game.GUI.ScreenState {
     public Stage stage;
 
-    public ScreenStart(ScreenManager sm) {
-        super(sm);
+
+
+    public ScreenStart(ScreenManager sm, Player P) {
+        super(sm, P);
         create();
+
     }
+
+
 
     @Override
     public void create() {
-        float screen_width = Gdx.graphics.getWidth();
-        float screen_height = Gdx.graphics.getHeight();
 
         stage = new Stage(new ScreenViewport());
 
@@ -31,22 +35,22 @@ public class ScreenStart extends com.mygdx.game.GUI.ScreenState {
         // START BUTTON
 
         Sprite s = new Sprite(new Texture("start/bttn_start.png"));
-        float scale = (screen_width/4)/s.getWidth();
-        s.setSize(screen_width/4, scale*s.getHeight());
+        float scale = (WIDTH/4)/s.getWidth();
+        s.setSize(WIDTH/4, scale*s.getHeight());
 
         ImageButton bttn_start = new ImageButton(new SpriteDrawable(s));
         bttn_start.setTransform(true);
-        bttn_start.setX(screen_width/2-bttn_start.getWidth()/2);
-        bttn_start.setY(screen_height/2-bttn_start.getHeight()/2 - screen_height/8);
+        bttn_start.setX(WIDTH/2-bttn_start.getWidth()/2);
+        bttn_start.setY(HEIGHT/2-bttn_start.getHeight()/2 - HEIGHT/8);
 
         //===============================================================================================================
         // CASINO IMAGE
 
         Image casino_image = new Image(new Texture("start/img_casino.png"));
-        scale = (screen_width/2)/casino_image.getWidth();
-        casino_image.setSize(screen_width/2, scale*casino_image.getHeight());
-        casino_image.setX(screen_width/2-casino_image.getWidth()/2);
-        casino_image.setY(screen_height/2-casino_image.getHeight()/2 + screen_height/8);
+        scale = (WIDTH/2)/casino_image.getWidth();
+        casino_image.setSize(WIDTH/2, scale*casino_image.getHeight());
+        casino_image.setX(WIDTH/2-casino_image.getWidth()/2);
+        casino_image.setY(HEIGHT/2-casino_image.getHeight()/2 + HEIGHT/8);
 
         Gdx.input.setInputProcessor(stage);
         stage.addActor(bttn_start);
@@ -55,7 +59,7 @@ public class ScreenStart extends com.mygdx.game.GUI.ScreenState {
         bttn_start.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                sm.add(new ScreenMenu(sm));
+                sm.add(new ScreenMenu(sm, P));
             }
         });
     }
@@ -67,9 +71,7 @@ public class ScreenStart extends com.mygdx.game.GUI.ScreenState {
         stage.draw();
     }
 
-    @Override
-    protected void handleInput() {
-    }
+
 
     @Override
     public void update(float dt) {

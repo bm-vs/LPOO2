@@ -26,7 +26,6 @@ public class PlayBJack extends ScreenState {
     private static final int DEALER = 0;
     private static final int PLAYER = 1;
 
-    private Player P;
     private Blackjack blackjack;
     private Texture background;
     private TextButton start, giveCard, stand;
@@ -42,15 +41,14 @@ public class PlayBJack extends ScreenState {
     private Label result;
 
 
-    public PlayBJack(ScreenManager sm) {
-        super(sm);
+    public PlayBJack(ScreenManager sm, Player P) {
+        super(sm, P);
         create();
     }
 
 
     @Override
     public void create() {
-        P = new Player(100);
 
         background = new Texture("blackJackMesa.png");
         texturaCartas = new Texture("cartas.png");
@@ -124,8 +122,8 @@ public class PlayBJack extends ScreenState {
                                   if (P.getMoney() < 10) {
                                       giveCard.setLayoutEnabled(false);
                                       sm.remove();
-                                      sm.add(new EndGame(sm));
-                                  } else {
+                                      sm.add(new EndGame(sm, P));
+                                  }  else {
                                       P.setMoney(P.getMoney() - 10);
 
                                       START = true;
@@ -161,10 +159,6 @@ public class PlayBJack extends ScreenState {
     }
 
 
-    @Override
-    protected void handleInput() {
-
-    }
 
     @Override
     public void update(float dt) {

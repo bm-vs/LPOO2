@@ -12,6 +12,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.SpriteDrawable;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.badlogic.gdx.utils.TimeUtils;
+import com.mygdx.game.Logic.Player;
 import com.mygdx.game.Logic.SlotMachine;
 
 public class ScreenSlotMachine extends com.mygdx.game.GUI.ScreenState {
@@ -25,31 +26,33 @@ public class ScreenSlotMachine extends com.mygdx.game.GUI.ScreenState {
     private ImageButton bttn_play;
     private Animator result;
 
-    public ScreenSlotMachine(ScreenManager sm) {
-        super(sm);
+
+
+    protected ScreenSlotMachine(ScreenManager sm, Player P) {
+        super(sm, P);
         create();
+
     }
+
 
     @Override
     public void create() {
         stage = new Stage(new ScreenViewport());
         machine = new SlotMachine();
 
-        float screen_width = Gdx.graphics.getWidth();
-        float screen_height = Gdx.graphics.getHeight();
-        float pad = screen_width/29;
+        float pad = WIDTH/29;
 
         //================================================================================================================================================================
         // BUTTON PLAY
         Sprite s = new Sprite(new Texture("slot_machine/bttn_play.png"));
-        float scale = (screen_width/4)/s.getWidth();
-        s.setSize(screen_width/4, scale*s.getHeight());
+        float scale = (WIDTH/4)/s.getWidth();
+        s.setSize(WIDTH/4, scale*s.getHeight());
         Sprite sd = new Sprite(new Texture("slot_machine/bttn_d_play.png"));
-        sd.setSize(screen_width/4, scale*sd.getHeight());
+        sd.setSize(WIDTH/4, scale*sd.getHeight());
 
         bttn_play = new ImageButton(new SpriteDrawable(s), new SpriteDrawable(sd));
-        bttn_play.setX(screen_width/2-bttn_play.getWidth()/2);
-        bttn_play.setY(screen_height/5-bttn_play.getHeight()/2);
+        bttn_play.setX(WIDTH/2-bttn_play.getWidth()/2);
+        bttn_play.setY(HEIGHT/5-bttn_play.getHeight()/2);
 
         //================================================================================================================================================================
         // SLOT WHEELS
@@ -66,20 +69,20 @@ public class ScreenSlotMachine extends com.mygdx.game.GUI.ScreenState {
         wheel[18] = new Image(new TextureRegion(new Texture("slot_machine/9.png"))); wheel[19] = new Image(new TextureRegion(new Texture("slot_machine/90.png")));
 
         wheel1 = new Animator(wheel);
-        scale = (screen_width/4)/wheel1.getWidth();
-        wheel1.setSize(screen_width/4, scale*wheel1.getHeight());
-        wheel1.setX(screen_width/2-wheel1.getWidth()*3/2-pad);
-        wheel1.setY(screen_height/2+wheel1.getHeight()/8);
+        scale = (WIDTH/4)/wheel1.getWidth();
+        wheel1.setSize(WIDTH/4, scale*wheel1.getHeight());
+        wheel1.setX(WIDTH/2-wheel1.getWidth()*3/2-pad);
+        wheel1.setY(HEIGHT/2+wheel1.getHeight()/8);
 
         wheel2 = new Animator(wheel);
-        wheel2.setSize(screen_width/4, scale*wheel2.getHeight());
-        wheel2.setX(screen_width/2-wheel2.getWidth()/2);
-        wheel2.setY(screen_height/2+wheel2.getHeight()/8);
+        wheel2.setSize(WIDTH/4, scale*wheel2.getHeight());
+        wheel2.setX(WIDTH/2-wheel2.getWidth()/2);
+        wheel2.setY(HEIGHT/2+wheel2.getHeight()/8);
 
         wheel3 = new Animator(wheel);
-        wheel3.setSize(screen_width/4, scale*wheel3.getHeight());
-        wheel3.setX(screen_width/2+wheel3.getWidth()/2+pad);
-        wheel3.setY(screen_height/2+wheel3.getHeight()/8);
+        wheel3.setSize(WIDTH/4, scale*wheel3.getHeight());
+        wheel3.setX(WIDTH/2+wheel3.getWidth()/2+pad);
+        wheel3.setY(HEIGHT/2+wheel3.getHeight()/8);
 
         //================================================================================================================================================================
         // WINNINGS IMAGE
@@ -88,10 +91,10 @@ public class ScreenSlotMachine extends com.mygdx.game.GUI.ScreenState {
         results[2] = new Image(new TextureRegion(new Texture("slot_machine/winnings_5.png"))); results[3] = new Image(new TextureRegion(new Texture("slot_machine/winnings_10.png")));
 
         result = new Animator(results);
-        scale = (screen_width/3)/result.getWidth();
-        result.setSize(screen_width/3, scale*result.getHeight());
-        result.setX(screen_width/2-result.getWidth()/2);
-        result.setY(screen_height/3-result.getHeight()/4);
+        scale = (WIDTH/3)/result.getWidth();
+        result.setSize(WIDTH/3, scale*result.getHeight());
+        result.setX(WIDTH/2-result.getWidth()/2);
+        result.setY(HEIGHT/3-result.getHeight()/4);
 
 
         //================================================================================================================================================================
@@ -112,11 +115,20 @@ public class ScreenSlotMachine extends com.mygdx.game.GUI.ScreenState {
                     return;
                 }
 
-                wheel1.setChanging(true);
-                wheel2.setChanging(true);
-                wheel3.setChanging(true);
-                machine.roll();
-                t_start = TimeUtils.millis();
+                if(P.getMoney() > 0) {
+                    P.setMoney(P.getMoney()-1);
+                    wheel1.setChanging(true);
+                    wheel2.setChanging(true);
+                    wheel3.setChanging(true);
+                    machine.roll();
+                    t_start = TimeUtils.millis();
+                }
+                else
+                {
+                    sm.remove();
+                    sm.add(new EndGame(sm, P));
+                }
+
             }
         });
     }
@@ -139,13 +151,16 @@ public class ScreenSlotMachine extends com.mygdx.game.GUI.ScreenState {
 
             switch(machine.prize()) {
                 case 2:
+                    P.setMoney(P.getMoney() + 2);
                     result.setCurrentPos(1);
                     break;
                 case 5:
+                    P.setMoney(P.getMoney() + 5);
                     result.setCurrentPos(2);
                     break;
                 case 10:
-                    result.setCurrentPos(3);
+                    P.setMoney(P.getMoney() + 10);
+                    result.setCurrentPos(3) ///============mostra o que ganhou mas falta mostar o valor do jogador==========
                     break;
                 default:
                     result.setCurrentPos(0);
@@ -173,8 +188,6 @@ public class ScreenSlotMachine extends com.mygdx.game.GUI.ScreenState {
         stage.draw();
     }
 
-    @Override
-    protected void handleInput() {}
 
     @Override
     public void update(float dt) {}

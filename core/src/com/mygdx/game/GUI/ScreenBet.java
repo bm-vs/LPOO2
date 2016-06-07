@@ -14,6 +14,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.SpriteDrawable;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
+import com.mygdx.game.Logic.Player;
 
 import java.util.ArrayList;
 
@@ -34,10 +35,11 @@ public class ScreenBet extends com.mygdx.game.GUI.ScreenState {
     private ImageButton secondhalf;
     private ButtonGroup buttonGroup;
 
+
     private int delay = 0;
 
-    public ScreenBet(ScreenManager sm) {
-        super(sm);
+    public ScreenBet(ScreenManager sm, Player P) {
+        super(sm, P);
         create();
     }
 
@@ -45,34 +47,32 @@ public class ScreenBet extends com.mygdx.game.GUI.ScreenState {
         stage = new Stage(new ScreenViewport());
         touchdown = false;
 
-        float screen_width = Gdx.graphics.getWidth();
-        float screen_height = Gdx.graphics.getHeight();
 
 
         //================================================================================================================================================================
         // OTHER BETS
 
         Sprite s = new Sprite(new Texture("roulette/bets/1st12.png"));
-        float scale = (screen_width/3)/s.getWidth();
-        s.setSize(screen_width/3, scale*s.getHeight());
+        float scale = (WIDTH/3)/s.getWidth();
+        s.setSize(WIDTH/3, scale*s.getHeight());
         Sprite sd = new Sprite(new Texture("roulette/bets/1st12_d.png"));
-        sd.setSize(screen_width/3, scale*sd.getHeight());
+        sd.setSize(WIDTH/3, scale*sd.getHeight());
         first12 = new ImageButton(new SpriteDrawable(s), new SpriteDrawable(sd), new SpriteDrawable(sd));
-        first12.setY(screen_height/2+first12.getHeight());
+        first12.setY(HEIGHT/2+first12.getHeight());
 
         s = new Sprite(new Texture("roulette/bets/2nd12.png"));
-        s.setSize(screen_width/3, scale*s.getHeight());
+        s.setSize(WIDTH/3, scale*s.getHeight());
         sd = new Sprite(new Texture("roulette/bets/2nd12_d.png"));
-        sd.setSize(screen_width/3, scale*sd.getHeight());
+        sd.setSize(WIDTH/3, scale*sd.getHeight());
         second12 = new ImageButton(new SpriteDrawable(s), new SpriteDrawable(sd), new SpriteDrawable(sd));
-        second12.setY(screen_height/2);
+        second12.setY(HEIGHT/2);
 
         s = new Sprite(new Texture("roulette/bets/3rd12.png"));
-        s.setSize(screen_width/3, scale*s.getHeight());
+        s.setSize(WIDTH/3, scale*s.getHeight());
         sd = new Sprite(new Texture("roulette/bets/3rd12_d.png"));
-        sd.setSize(screen_width/3, scale*sd.getHeight());
+        sd.setSize(WIDTH/3, scale*sd.getHeight());
         third12 = new ImageButton(new SpriteDrawable(s), new SpriteDrawable(sd), new SpriteDrawable(sd));
-        third12.setY(screen_height/2-first12.getHeight());
+        third12.setY(HEIGHT/2-first12.getHeight());
 
         s = new Sprite(new Texture("roulette/bets/even.png"));
         s.setSize(scale*s.getWidth(), scale*s.getHeight());
@@ -116,9 +116,9 @@ public class ScreenBet extends com.mygdx.game.GUI.ScreenState {
         secondhalf = new ImageButton(new SpriteDrawable(s), new SpriteDrawable(sd), new SpriteDrawable(sd));
         secondhalf.setY(third12.getY());
 
-        first12.setX(screen_width/2-(first12.getWidth()+even.getWidth()+odd.getWidth())/2);
-        second12.setX(screen_width/2-(first12.getWidth()+even.getWidth()+odd.getWidth())/2);
-        third12.setX(screen_width/2-(first12.getWidth()+even.getWidth()+odd.getWidth())/2);
+        first12.setX(WIDTH/2-(first12.getWidth()+even.getWidth()+odd.getWidth())/2);
+        second12.setX(WIDTH/2-(first12.getWidth()+even.getWidth()+odd.getWidth())/2);
+        third12.setX(WIDTH/2-(first12.getWidth()+even.getWidth()+odd.getWidth())/2);
         even.setX(third12.getX() + third12.getWidth());
         odd.setX(even.getX() + even.getWidth());
         red.setX(third12.getX() + third12.getWidth());
@@ -139,23 +139,23 @@ public class ScreenBet extends com.mygdx.game.GUI.ScreenState {
         }
 
         numbers = new Animator(n);
-        scale = (screen_width/4)/numbers.getWidth();
-        numbers.setSize(screen_width/4, scale*numbers.getHeight());
-        numbers.setX(screen_width/2-numbers.getWidth()/2);
+        scale = (WIDTH/4)/numbers.getWidth();
+        numbers.setSize(WIDTH/4, scale*numbers.getHeight());
+        numbers.setX(WIDTH/2-numbers.getWidth()/2);
         numbers.setY(first12.getY()+first12.getHeight()*2);
 
 
         //================================================================================================================================================================
         // BUTTON BET
         s = new Sprite(new Texture("roulette/bttn_bet.png"));
-        scale = (screen_width/4)/s.getWidth();
-        s.setSize(screen_width/4, scale*s.getHeight());
+        scale = (WIDTH/4)/s.getWidth();
+        s.setSize(WIDTH/4, scale*s.getHeight());
         sd = new Sprite(new Texture("roulette/bttn_d_bet.png"));
-        sd.setSize(screen_width/4, scale*sd.getHeight());
+        sd.setSize(WIDTH/4, scale*sd.getHeight());
 
         bttn_bet = new ImageButton(new SpriteDrawable(s), new SpriteDrawable(sd));
-        bttn_bet.setX(screen_width/2-bttn_bet.getWidth()/2);
-        bttn_bet.setY(screen_height/5+bttn_bet.getHeight()/2);
+        bttn_bet.setX(WIDTH/2-bttn_bet.getWidth()/2);
+        bttn_bet.setY(HEIGHT/5+bttn_bet.getHeight()/2);
 
         //================================================================================================================================================================
         // STAGE
@@ -216,7 +216,7 @@ public class ScreenBet extends com.mygdx.game.GUI.ScreenState {
                 }
 
                 sm.remove();
-                sm.add(new ScreenRoulette(sm, bet_arr));
+                sm.add(new ScreenRoulette(sm,P, bet_arr));
             }
         });
 

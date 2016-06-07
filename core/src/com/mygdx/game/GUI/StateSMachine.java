@@ -12,6 +12,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.mygdx.game.Logic.Player;
 
 
 public class StateSMachine extends ScreenState {
@@ -26,10 +27,10 @@ public class StateSMachine extends ScreenState {
     Texture pixmapTexture;
 
 
-    public StateSMachine(ScreenManager sm) {
-        super(sm);
-        create();
 
+    protected StateSMachine(ScreenManager sm, Player P) {
+        super(sm, P);
+        create();
     }
 
     @Override
@@ -115,10 +116,7 @@ public class StateSMachine extends ScreenState {
         });
     }
 
-    @Override
-    protected void handleInput() {
 
-    }
 
     @Override
     public void update(float dt) {

@@ -12,6 +12,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.SpriteDrawable;
 import com.badlogic.gdx.utils.TimeUtils;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
+import com.mygdx.game.Logic.Player;
 import com.mygdx.game.Logic.Roulette;
 
 
@@ -31,14 +32,17 @@ public class ScreenRoulette extends com.mygdx.game.GUI.ScreenState {
     private boolean bet_set;
     private boolean positioning;
 
-    public ScreenRoulette(ScreenManager sm) {
-        super(sm);
+
+
+
+    public ScreenRoulette(ScreenManager sm,Player P) {
+        super(sm,P);
         bet_set = false;
         create();
     }
 
-    public ScreenRoulette(ScreenManager sm, Integer[] bet) {
-        super(sm);
+    public ScreenRoulette(ScreenManager sm,Player P, Integer[] bet) {
+        super(sm,P);
         this.bet = bet;
         bet_set = true;
         create();
@@ -47,8 +51,7 @@ public class ScreenRoulette extends com.mygdx.game.GUI.ScreenState {
 
     @Override
     public void create() {
-        float screen_width = Gdx.graphics.getWidth();
-        float screen_height = Gdx.graphics.getHeight();
+
 
         stage = new Stage(new ScreenViewport());
         roulette = new Roulette();
@@ -57,36 +60,36 @@ public class ScreenRoulette extends com.mygdx.game.GUI.ScreenState {
         //================================================================================================================================================================
         // BUTTON ROLL
         Sprite s = new Sprite(new Texture("roulette/bttn_roll.png"));
-        float scale = (screen_width/4)/s.getWidth();
-        s.setSize(screen_width/4, scale*s.getHeight());
+        float scale = (WIDTH/4)/s.getWidth();
+        s.setSize(WIDTH/4, scale*s.getHeight());
         Sprite sd = new Sprite(new Texture("roulette/bttn_d_roll.png"));
-        sd.setSize(screen_width/4, scale*sd.getHeight());
+        sd.setSize(WIDTH/4, scale*sd.getHeight());
 
         bttn_roll = new ImageButton(new SpriteDrawable(s), new SpriteDrawable(sd));
-        bttn_roll.setX(screen_width/2-bttn_roll.getWidth()/2);
-        bttn_roll.setY(screen_height/5-bttn_roll.getHeight());
+        bttn_roll.setX(WIDTH/2-bttn_roll.getWidth()/2);
+        bttn_roll.setY(HEIGHT/6-bttn_roll.getHeight());
 
 
         //================================================================================================================================================================
         // WIN TEXT
         win = new Image(new Texture("roulette/win.png"));
-        scale = (screen_width/4)/win.getWidth();
-        win.setSize(screen_width/4, scale*win.getHeight());
-        win.setX(screen_width/2-win.getWidth()/2);
-        win.setY(screen_height/5-win.getHeight());
+        scale = (WIDTH/4)/win.getWidth();
+        win.setSize(WIDTH/4, scale*win.getHeight());
+        win.setX(WIDTH/2-win.getWidth()/2);
+        win.setY(HEIGHT/5-win.getHeight());
 
 
         //================================================================================================================================================================
         // BUTTON BET
         s = new Sprite(new Texture("roulette/bttn_bet.png"));
-        scale = (screen_width/4)/s.getWidth();
-        s.setSize(screen_width/4, scale*s.getHeight());
+        scale = (WIDTH/4)/s.getWidth();
+        s.setSize(WIDTH/4, scale*s.getHeight());
         sd = new Sprite(new Texture("roulette/bttn_d_bet.png"));
-        sd.setSize(screen_width/4, scale*sd.getHeight());
+        sd.setSize(WIDTH/4, scale*sd.getHeight());
 
         bttn_bet = new ImageButton(new SpriteDrawable(s), new SpriteDrawable(sd));
-        bttn_bet.setX(screen_width/2-bttn_bet.getWidth()/2);
-        bttn_bet.setY(screen_height/5+bttn_bet.getHeight()/2);
+        bttn_bet.setX(WIDTH/2-bttn_bet.getWidth()/2);
+        bttn_bet.setY(HEIGHT/6+bttn_bet.getHeight()/2);
 
 
         //===============================================================================================================
@@ -94,10 +97,10 @@ public class ScreenRoulette extends com.mygdx.game.GUI.ScreenState {
         Image[] w = new Image[1];
         w[0] = new Image(new Texture("roulette/wheel.png"));
         roulette_wheel = new Animator(w);
-        scale = (screen_width*4/5)/roulette_wheel.getWidth();
-        roulette_wheel.setSize(screen_width*4/5, scale*roulette_wheel.getHeight());
-        roulette_wheel.setX(screen_width/2-roulette_wheel.getWidth()/2);
-        roulette_wheel.setY(screen_height/2-roulette_wheel.getHeight()/4);
+        scale = (WIDTH*4/5)/roulette_wheel.getWidth();
+        roulette_wheel.setSize(WIDTH*4/5, scale*roulette_wheel.getHeight());
+        roulette_wheel.setX(WIDTH/2-roulette_wheel.getWidth()/2);
+        roulette_wheel.setY(HEIGHT/2-roulette_wheel.getHeight()/4);
 
 
         //===============================================================================================================
@@ -106,7 +109,7 @@ public class ScreenRoulette extends com.mygdx.game.GUI.ScreenState {
         b[0] = new Image(new Texture("roulette/ball.png"));
         roulette_ball = new Animator(b);
         roulette_ball.setSize(scale*roulette_ball.getWidth(), scale*roulette_ball.getHeight());
-        roulette_ball.setX(screen_width/2-roulette_ball.getWidth()/2);
+        roulette_ball.setX(WIDTH/2-roulette_ball.getWidth()/2);
         roulette_ball.setY(roulette_wheel.getY());
 
 
@@ -126,15 +129,24 @@ public class ScreenRoulette extends com.mygdx.game.GUI.ScreenState {
                     return;
                 }
 
-                roulette_wheel.setSpinning(true);
-                roulette_ball.setOrigin(roulette_ball.getWidth()/2, roulette_wheel.getHeight()/2-(roulette_ball.getY()-roulette_wheel.getY()));
-                result = roulette.roll();
-                roulette_wheel.setAngle(180+result*360/37);
-                t_start = TimeUtils.millis();
-                bet_set = false;
-                bttn_roll.remove();
 
-                System.out.println(roulette.getCurrentNumber().getNumber());
+                if(P.getMoney() > 0) {
+                    P.setMoney(P.getMoney()- VALOR_A_DEFINIR); ///=========falta tambem mostar o valor do jogador em algum lado
+                    roulette_wheel.setSpinning(true);
+                    roulette_ball.setOrigin(roulette_ball.getWidth() / 2, roulette_wheel.getHeight() / 2 - (roulette_ball.getY() - roulette_wheel.getY()));
+                    result = roulette.roll();
+                    roulette_wheel.setAngle(180 + result * 360 / 37);
+                    t_start = TimeUtils.millis();
+                    bet_set = false;
+                    bttn_roll.remove();
+
+                    System.out.println(roulette.getCurrentNumber().getNumber());
+                }
+                else
+                {
+                    sm.remove();
+                    sm.add(new EndGame(sm, P));
+                }
             }
         });
 
@@ -142,7 +154,7 @@ public class ScreenRoulette extends com.mygdx.game.GUI.ScreenState {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 sm.remove();
-                sm.add(new ScreenBet(sm));
+                sm.add(new ScreenBet(sm, P));
             }
         });
 
@@ -151,8 +163,8 @@ public class ScreenRoulette extends com.mygdx.game.GUI.ScreenState {
 
     @Override
     public void render() {
-        float screen_width = Gdx.graphics.getWidth();
-        float screen_height = Gdx.graphics.getHeight();
+        float WIDTH = Gdx.graphics.getWidth();
+        float HEIGHT = Gdx.graphics.getHeight();
 
         Gdx.gl.glClearColor(0.086f, 0.22f, 0.157f, 1);
         stage.act();
@@ -201,8 +213,7 @@ public class ScreenRoulette extends com.mygdx.game.GUI.ScreenState {
         stage.draw();
     }
 
-    @Override
-    protected void handleInput() {}
+
 
     @Override
     public void update(float dt) {}

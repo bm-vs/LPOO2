@@ -13,7 +13,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-
+import com.mygdx.game.Logic.Player;
 
 
 public class StateBJack extends ScreenState {
@@ -27,10 +27,11 @@ public class StateBJack extends ScreenState {
     Texture pixmapTexture;
 
 
-    public StateBJack(ScreenManager sm) {
-        super(sm);
-        create();
 
+
+    protected StateBJack(ScreenManager sm, Player P) {
+        super(sm, P);
+        create();
 
     }
 
@@ -83,17 +84,14 @@ public class StateBJack extends ScreenState {
         button.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                System.out.println("play");
-                sm.add(new PlayBJack(sm));
+               // System.out.println("play");
+                sm.add(new PlayBJack(sm, P));
 
             }
         });
     }
 
-    @Override
-    protected void handleInput() {
 
-    }
 
     @Override
     public void update(float dt) {
