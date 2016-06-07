@@ -1,6 +1,6 @@
 [
     {
-        "outputFile": "D:\\Casino\\android\\build\\intermediates\\res\\merged\\debug\\values\\values.xml",
+        "outputFile": "D:\\Casino - backups\\Casino\\android\\build\\intermediates\\res\\merged\\debug\\values\\values.xml",
         "map": [
             {
                 "to": {
@@ -11,7 +11,7 @@
                     "endOffset": 94
                 },
                 "from": {
-                    "file": "D:\\Casino\\android\\res\\values\\strings.xml",
+                    "file": "D:\\Casino - backups\\Casino\\android\\res\\values\\strings.xml",
                     "position": {
                         "startLine": 3,
                         "startColumn": 4,
@@ -31,7 +31,7 @@
                     "endOffset": 557
                 },
                 "from": {
-                    "file": "D:\\Casino\\android\\res\\values\\styles.xml",
+                    "file": "D:\\Casino - backups\\Casino\\android\\res\\values\\styles.xml",
                     "position": {
                         "startLine": 2,
                         "startColumn": 4,
